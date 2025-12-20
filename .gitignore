@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Test reports
+reports/
+allure-results/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Screenshots
+screenshots/
+
+# Local config overrides
+config/config.local.json
+
+# Logs
+*.log
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
