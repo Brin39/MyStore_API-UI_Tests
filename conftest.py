@@ -3,8 +3,9 @@ Pytest fixtures for MyStore E2E tests.
 Provides browser, API clients, and test data management.
 """
 
+import random
 import pytest
-from typing import Generator, Dict
+from typing import Generator, Dict, List
 
 from infra.browser_wrapper import BrowserWrapper
 from infra.api_wrapper import ApiWrapper
@@ -263,11 +264,16 @@ def create_test_product(admin_api, config, cleanup) -> callable:
 def create_test_order(orders_api, products_api, cleanup) -> callable:
     """
     Factory fixture to create test order via API.
+    Uses RANDOM product from database for test isolation.
     Returns function that creates order.
     """
-    def _create_order(user_token: str) -> Dict:
-        products = products_api.get_all_products()
-        product = products[0]
+    def _create_order(user_token: str, product: Dict = None) -> Dict:
+        # Use provided product or get random one
+        if product is None:
+            products = products_api.get_all_products()
+            if not products:
+                raise ValueError("No products available in the database")
+            product = random.choice(products)
         
         result = orders_api.create_order(
             items=[{"product": product["_id"], "quantity": 1}],
@@ -290,6 +296,7 @@ def get_admin_token(auth_api, config) -> callable:
     """
     Get admin token for test setup.
     Uses configured admin credentials.
+    NOTE: This uses shared admin from config. For isolated tests, use create_test_admin.
     """
     def _get_token() -> str:
         result = auth_api.login(
@@ -301,16 +308,78 @@ def get_admin_token(auth_api, config) -> callable:
     return _get_token
 
 
+@pytest.fixture
+def create_test_admin(auth_api, cleanup, config) -> callable:
+    """
+    Factory fixture to create test admin via API.
+    Creates a NEW admin for each test with cleanup.
+    Returns function that creates admin and returns admin data with token.
+    """
+    def _create_admin(
+        name: str = None,
+        email: str = None,
+        password: str = "AdminPass123"
+    ) -> Dict:
+        admin_data = DataFactory.user(name=name, email=email, password=password)
+        # Add "Admin" prefix to name for clarity
+        if not name:
+            admin_data["name"] = f"TestAdmin_{admin_data['name']}"
+        
+        result = auth_api.register_admin(
+            name=admin_data["name"],
+            email=admin_data["email"],
+            password=admin_data["password"],
+            admin_code=config.admin_creation_code
+        )
+        
+        # Register for cleanup
+        admin_id = result.get("_id") or result.get("user", {}).get("_id")
+        if admin_id:
+            cleanup.register_user(admin_id)
+        
+        return {
+            "user": result.get("user", result),
+            "token": result.get("token"),
+            "email": admin_data["email"],
+            "password": admin_data["password"],
+            "admin_id": admin_id
+        }
+    
+    return _create_admin
+
+
+@pytest.fixture
+def get_random_product(products_api) -> callable:
+    """
+    Get a random product from existing products in the database.
+    Each call returns a different random product WITH STOCK > 0.
+    """
+    def _get_product(min_stock: int = 1) -> Dict:
+        products = products_api.get_all_products()
+        if not products:
+            raise ValueError("No products available in the database")
+        
+        # Filter products with sufficient stock
+        available_products = [p for p in products if p.get("stock", 0) >= min_stock]
+        if not available_products:
+            raise ValueError(f"No products available with stock >= {min_stock}")
+        
+        return random.choice(available_products)
+    
+    return _get_product
+
+
 # ==================== BROWSER AUTH HELPERS ====================
 
 @pytest.fixture
 def logged_in_browser(browser, create_test_user, login_page) -> Dict:
     """
     Fixture that provides browser with logged in user.
-    Creates user via API, logs in via UI.
+    Creates NEW user via API for each test, logs in via UI.
+    User is automatically cleaned up after test.
     Returns dict with browser, user info, token from localStorage.
     """
-    # Create user via API
+    # Create user via API (unique for this test, will be cleaned up)
     user_data = create_test_user()
     
     # Get user_id from registration response
@@ -334,5 +403,40 @@ def logged_in_browser(browser, create_test_user, login_page) -> Dict:
         "token": browser_token,
         "email": user_data["email"],
         "password": user_data["password"]
+    }
+
+
+@pytest.fixture
+def logged_in_admin_browser(browser, create_test_admin, login_page) -> Dict:
+    """
+    Fixture that provides browser with logged in admin.
+    Creates NEW admin via API for each test, logs in via UI.
+    Admin is automatically cleaned up after test.
+    Returns dict with browser, admin info, token from localStorage.
+    """
+    # Create admin via API (unique for this test, will be cleaned up)
+    admin_data = create_test_admin()
+    
+    # Get admin_id from registration response
+    admin_id = admin_data.get("admin_id")
+    
+    # Login via UI
+    login_page.open()
+    login_page.login(admin_data["email"], admin_data["password"])
+    
+    # Wait for redirect
+    login_page.wait_for_url_contains("/user")
+    
+    # Get token from browser localStorage
+    browser_token = browser.driver.execute_script("return localStorage.getItem('token');")
+    
+    return {
+        "browser": browser,
+        "driver": browser.driver,
+        "admin": admin_data["user"],
+        "admin_id": admin_id,
+        "token": browser_token,
+        "email": admin_data["email"],
+        "password": admin_data["password"]
     }
 
