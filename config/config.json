@@ -1,0 +1,14 @@
+{
+    "base_url": "http://localhost:3000",
+    "api_url": "http://localhost:5000",
+    "timeout": 10,
+    "implicit_wait": 10,
+    "headless": false,
+    "browser": "chrome",
+    "admin": {
+        "email": "admin@test.com",
+        "password": "Admin123456"
+    },
+    "admin_creation_code": "YOUR_ADMIN_CODE"
+}
+
