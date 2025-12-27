@@ -10,7 +10,7 @@ class Urls:
     LOGIN = "/login"
     REGISTER = "/register"
     USER_HOME = "/user"
-    CART = "/user/cart"
+    CART = "/cart"
     ORDERS = "/user/orders"
     PROFILE = "/user/profile"
     ADMIN = "/admin"
