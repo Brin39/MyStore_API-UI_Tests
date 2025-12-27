@@ -4,8 +4,11 @@ Provides browser, API clients, and test data management.
 """
 
 import random
+import logging
 import pytest
 from typing import Generator, Dict, List
+
+logger = logging.getLogger(__name__)
 
 from infra.browser_wrapper import BrowserWrapper
 from infra.api_wrapper import ApiWrapper
@@ -177,19 +180,26 @@ def cleanup(admin_api, auth_api, config) -> Generator[CleanupManager, None, None
     """
     Get cleanup manager.
     Cleans up all registered resources after test.
+    Configures admin API BEFORE test to ensure cleanup works.
     """
     manager = CleanupManager()
     
-    yield manager
-    
-    # Get admin token and configure cleanup
+    # Get admin token and configure cleanup BEFORE test
+    # This ensures cleanup will work even if test fails
     try:
         admin_result = auth_api.login(config.admin_email, config.admin_password)
         admin_token = admin_result.get("token")
-        manager.set_admin_api(admin_api, admin_token)
-    except Exception:
-        pass
+        if admin_token:
+            manager.set_admin_api(admin_api, admin_token)
+            logger.debug("Cleanup manager configured with admin token")
+        else:
+            logger.warning("Failed to get admin token for cleanup - cleanup may not work")
+    except Exception as e:
+        logger.warning(f"Failed to configure cleanup manager: {e} - cleanup may not work")
     
+    yield manager
+    
+    # Cleanup all registered resources after test
     manager.cleanup_all()
 
 

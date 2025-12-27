@@ -48,9 +48,24 @@ class CleanupManager:
     
     def cleanup_all(self):
         """Clean up all registered resources"""
+        total_resources = len(self._users) + len(self._products) + len(self._orders)
+        
         if not self.admin_api or not self.admin_token:
-            logger.warning("Admin API not configured, skipping cleanup")
+            logger.warning(
+                f"Admin API not configured, skipping cleanup. "
+                f"Resources not cleaned: {len(self._users)} users, "
+                f"{len(self._products)} products, {len(self._orders)} orders"
+            )
             return
+        
+        if total_resources == 0:
+            logger.debug("No resources to clean up")
+            return
+        
+        logger.debug(
+            f"Starting cleanup: {len(self._users)} users, "
+            f"{len(self._products)} products, {len(self._orders)} orders"
+        )
         
         # Clean orders first (they may reference products/users)
         for order_id in self._orders:
@@ -69,7 +84,7 @@ class CleanupManager:
         self._products.clear()
         self._users.clear()
         
-        logger.debug("Cleanup completed")
+        logger.debug(f"Cleanup completed: {total_resources} resources cleaned")
     
     def _safe_delete_user(self, user_id: str):
         """Safely delete user, ignore errors"""
@@ -77,7 +92,7 @@ class CleanupManager:
             self.admin_api.delete_user(user_id, self.admin_token)
             logger.debug(f"Deleted user: {user_id}")
         except Exception as e:
-            logger.debug(f"Failed to delete user {user_id}: {e}")
+            logger.warning(f"Failed to delete user {user_id}: {e}")
     
     def _safe_delete_product(self, product_id: str):
         """Safely delete product, ignore errors"""
@@ -85,7 +100,7 @@ class CleanupManager:
             self.admin_api.delete_product(product_id, self.admin_token)
             logger.debug(f"Deleted product: {product_id}")
         except Exception as e:
-            logger.debug(f"Failed to delete product {product_id}: {e}")
+            logger.warning(f"Failed to delete product {product_id}: {e}")
     
     def _safe_delete_order(self, order_id: str):
         """Safely delete order, ignore errors"""
@@ -93,5 +108,5 @@ class CleanupManager:
             self.admin_api.delete_order(order_id, self.admin_token)
             logger.debug(f"Deleted order: {order_id}")
         except Exception as e:
-            logger.debug(f"Failed to delete order {order_id}: {e}")
+            logger.warning(f"Failed to delete order {order_id}: {e}")
 
