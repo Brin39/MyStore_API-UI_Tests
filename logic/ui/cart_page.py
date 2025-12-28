@@ -35,16 +35,51 @@ class CartPage(BasePage):
         return self.is_visible_by_testid(self.EMPTY_CART_MESSAGE, timeout=3)
     
     def get_cart_items(self) -> List:
-        """Get all cart item elements"""
-        return self.driver.find_elements(
+        """Get all cart item elements (main items only, not sub-elements)"""
+        # Find only main cart item containers (exact match for cart-item-{id})
+        all_elements = self.driver.find_elements(
             By.CSS_SELECTOR, '[data-testid^="cart-item-"]'
         )
+        # Filter to get only main item containers (not sub-elements like cart-item-quantity-{id})
+        items = []
+        seen_ids = set()
+        for elem in all_elements:
+            testid = elem.get_attribute("data-testid")
+            if testid and testid.startswith("cart-item-"):
+                # Extract product ID (everything after "cart-item-")
+                parts = testid.split("cart-item-", 1)
+                if len(parts) > 1:
+                    product_id = parts[1].split("-")[0]  # Get first part before any additional dashes
+                    if product_id not in seen_ids:
+                        # Check if this is a main item (not a sub-element)
+                        if testid == f"cart-item-{product_id}":
+                            items.append(elem)
+                            seen_ids.add(product_id)
+        return items
     
     def get_cart_items_count(self) -> int:
         """Get number of items in cart"""
-        items = self.get_cart_items()
-        # Filter out non-item elements (like cart-item-quantity, etc.)
-        return len([i for i in items if "-" not in i.get_attribute("data-testid").split("cart-item-")[1]])
+        return len(self.get_cart_items())
+    
+    def is_item_in_cart(self, product_id: str, timeout: int = 5) -> bool:
+        """Check if specific item is in cart"""
+        try:
+            self.is_visible_by_testid(f"cart-item-{product_id}", timeout=timeout)
+            return True
+        except:
+            return False
+    
+    def wait_for_item_removed(self, product_id: str, timeout: int = 10):
+        """Wait for item to be removed from cart"""
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.common.by import By
+        
+        # Wait for element to be removed from DOM
+        self.wait.until(
+            EC.invisibility_of_element_located(
+                (By.CSS_SELECTOR, f'[data-testid="cart-item-{product_id}"]')
+            )
+        )
     
     def get_cart_total(self) -> str:
         """Get cart total text"""
@@ -79,6 +114,8 @@ class CartPage(BasePage):
     
     def remove_item(self, product_id: str):
         """Remove item from cart"""
+        # Wait for delete button to be visible and clickable
+        self.is_visible_by_testid(f"cart-item-{product_id}-delete-btn", timeout=10)
         self.click_by_testid(f"cart-item-{product_id}-delete-btn")
     
     def get_item_name(self, product_id: str) -> str:
