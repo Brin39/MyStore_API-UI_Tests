@@ -54,6 +54,8 @@ class ProfilePage(BasePage):
     
     def click_edit(self):
         """Click edit button to enter edit mode"""
+        # Wait for edit button to be visible and clickable
+        self.is_visible_by_testid(self.PROFILE_EDIT_BTN, timeout=10)
         self.click_by_testid(self.PROFILE_EDIT_BTN)
     
     def is_in_display_mode(self) -> bool:
