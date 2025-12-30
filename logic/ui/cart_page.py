@@ -28,6 +28,13 @@ class CartPage(BasePage):
         """Navigate to cart page"""
         self.navigate(Urls.CART)
     
+    def open_via_ui(self):
+        """Navigate to cart page via UI click (preserves localStorage)"""
+        import time
+        cart_link = self.driver.find_element(By.CSS_SELECTOR, '[data-testid="cart-link"]')
+        cart_link.click()
+        time.sleep(1)
+    
     # ==================== CART STATE ====================
     
     def is_cart_empty(self) -> bool:
@@ -106,6 +113,8 @@ class CartPage(BasePage):
     
     def increase_item_quantity(self, product_id: str):
         """Increase item quantity"""
+        # Wait for increase button to be visible and clickable
+        self.is_visible_by_testid(f"cart-item-increase-{product_id}", timeout=10)
         self.click_by_testid(f"cart-item-increase-{product_id}")
     
     def decrease_item_quantity(self, product_id: str):
