@@ -25,6 +25,19 @@ class OrdersPage(BasePage):
         """Navigate to orders page"""
         self.navigate(Urls.ORDERS)
     
+    def open_via_ui(self):
+        """Navigate to orders page via UI click (preserves localStorage)"""
+        import time
+        # Wait for profile button to be visible and clickable, then click
+        self.is_visible_by_testid("profile-button", timeout=10)
+        self.click_by_testid("profile-button")
+        time.sleep(0.5)
+        
+        # Wait for orders link to be visible and clickable, then click
+        self.is_visible_by_testid("dashboard-my-orders", timeout=10)
+        self.click_by_testid("dashboard-my-orders")
+        time.sleep(1)
+    
     # ==================== ORDERS STATE ====================
     
     def has_no_orders(self) -> bool:

@@ -138,7 +138,9 @@ class CartPage(BasePage):
     # ==================== CART ACTIONS ====================
     
     def click_checkout(self):
-        """Click checkout button"""
+        """Click checkout button (waits for button to be visible and clickable)"""
+        # Wait for checkout button to be visible and clickable
+        self.is_visible_by_testid(self.CHECKOUT_BTN, timeout=10)
         self.click_by_testid(self.CHECKOUT_BTN)
     
     def click_clear_cart(self):
