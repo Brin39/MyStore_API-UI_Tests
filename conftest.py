@@ -344,12 +344,20 @@ def create_test_admin(auth_api, cleanup, config) -> callable:
         
         # Register for cleanup
         admin_id = result.get("_id") or result.get("user", {}).get("_id")
+        admin_token = result.get("token")
+        
         if admin_id:
             cleanup.register_user(admin_id)
         
+        # Update cleanup to use created admin token (needed to delete resources created by this admin)
+        if admin_token:
+            from logic.api.admin_api import AdminApi
+            admin_api = AdminApi()
+            cleanup.set_admin_api(admin_api, admin_token)
+        
         return {
             "user": result.get("user", result),
-            "token": result.get("token"),
+            "token": admin_token,
             "email": admin_data["email"],
             "password": admin_data["password"],
             "admin_id": admin_id
