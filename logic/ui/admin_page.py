@@ -77,8 +77,8 @@ class AdminProductsPage(BasePage):
     STOCK_INPUT = "product-stock-input"
     CATEGORY_INPUT = "product-category-input"
     BEST_OFFER_CHECKBOX = "product-best-offer-checkbox"
-    SAVE_BTN = "save-form-btn"
-    CANCEL_BTN = "cancel-form-btn"
+    SAVE_BTN = "edit-product-save-btn"
+    CANCEL_BTN = "edit-product-cancel-btn"
     
     # Alert modal
     ALERT_MODAL = "alert-modal"
@@ -154,7 +154,7 @@ class AdminProductsPage(BasePage):
         """Click edit button for product"""
         # The edit button is within the product row
         row = self.find_by_testid(f"admin-product-row-{product_id}")
-        edit_btn = row.find_element(By.CSS_SELECTOR, '[data-testid="edit-btn"]')
+        edit_btn = row.find_element(By.CSS_SELECTOR, f'[data-testid="admin-product-{product_id}-edit-btn"]')
         edit_btn.click()
     
     def click_delete_product(self, product_id: str):
@@ -204,7 +204,7 @@ class AdminUsersPage(BasePage):
     
     def is_user_visible(self, user_id: str) -> bool:
         """Check if user card is visible"""
-        return self.is_visible_by_testid(f"admin-user-card-{user_id}", timeout=3)
+        return self.is_visible_by_testid(f"admin-user-row-{user_id}", timeout=3)
     
     def get_user_name(self, user_id: str) -> str:
         """Get user name"""
