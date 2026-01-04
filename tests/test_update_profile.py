@@ -61,6 +61,8 @@ class TestUpdateProfile:
             "New phone should be different from initial"
         assert updated_profile.get("phone") == new_phone, \
             f"Phone should be updated. Expected '{new_phone}', got '{updated_profile.get('phone')}'"
+        assert new_address != initial_address, \
+            "New address should be different from initial"
         assert updated_profile.get("address") == new_address, \
             f"Address should be updated. Expected '{new_address}', got '{updated_profile.get('address')}'"
 

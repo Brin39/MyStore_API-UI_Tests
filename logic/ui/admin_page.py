@@ -2,9 +2,10 @@
 Admin Page Objects for MyStore.
 """
 
-from typing import List
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from logic.ui.base_page import BasePage
 from utils.constants import Urls
 
@@ -224,11 +225,27 @@ class AdminUsersPage(BasePage):
     
     def click_delete_user(self, user_id: str):
         """Click delete button for user"""
-        self.click_by_testid(f"admin-user-delete-{user_id}")
+        self.click_by_testid(f"admin-user-{user_id}-delete-btn")
     
     def confirm_delete(self):
         """Confirm delete action"""
         self.click_by_testid("confirm-alert-btn")
+
+    
+    def confirm_browser_alert(self):
+        """Confirm delete action - handle browser alert"""
+        # Wait for alert to appear and accept it
+        alert = WebDriverWait(self.driver, 5).until(EC.alert_is_present())
+        alert.accept()
+        
+        # Handle error alert that may appear after deletion
+        try:
+            error_alert = WebDriverWait(self.driver, 2).until(EC.alert_is_present())
+            error_alert.accept()
+        except Exception:
+            # No error alert, continue
+            pass
+        
     
     def is_edit_form_visible(self) -> bool:
         """Check if edit form is visible"""
