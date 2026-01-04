@@ -26,12 +26,10 @@ from logic.ui.home_page import HomePage
 from logic.ui.cart_page import CartPage
 from logic.ui.orders_page import OrdersPage
 from logic.ui.profile_page import ProfilePage
-from logic.ui.admin_page import (
-    AdminDashboardPage,
-    AdminProductsPage,
-    AdminUsersPage,
-    AdminOrdersPage
-)
+from logic.ui.admin_dashboard_page import AdminDashboardPage
+from logic.ui.admin_products_page import AdminProductsPage
+from logic.ui.admin_users_page import AdminUsersPage
+from logic.ui.admin_orders_page import AdminOrdersPage
 
 from utils.data_factory import DataFactory
 from utils.cleanup_utils import CleanupManager
@@ -347,7 +345,7 @@ def create_test_admin(auth_api, cleanup, config) -> callable:
         admin_token = result.get("token")
         
         if admin_id:
-            cleanup.register_user(admin_id)
+            cleanup.register_user(admin_id, is_admin=True)  # Mark as admin - will be deleted last
         
         # Update cleanup to use created admin token (needed to delete resources created by this admin)
         if admin_token:

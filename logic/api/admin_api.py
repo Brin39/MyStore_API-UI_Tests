@@ -117,12 +117,4 @@ class AdminApi:
         endpoint = ApiEndpoints.ADMIN_ORDER.format(id=order_id)
         response = self.api.delete(endpoint, token=token)
         response.raise_for_status()
-    
-    # ==================== STATS ====================
-    
-    def get_stats(self, token: str) -> Dict:
-        """Get dashboard statistics."""
-        response = self.api.get(ApiEndpoints.ADMIN_STATS, token=token)
-        response.raise_for_status()
-        return response.json()
 
