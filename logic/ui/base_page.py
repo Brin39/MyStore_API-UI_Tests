@@ -165,4 +165,18 @@ class BasePage:
             return True
         except TimeoutException:
             return False
+    
+    def confirm_browser_alert(self):
+        """Confirm delete action - handle browser alert"""
+        # Wait for alert to appear and accept it
+        alert = WebDriverWait(self.driver, 5).until(EC.alert_is_present())
+        alert.accept()
+        
+        # Handle error alert that may appear after deletion
+        try:
+            error_alert = WebDriverWait(self.driver, 2).until(EC.alert_is_present())
+            error_alert.accept()
+        except Exception:
+            # No error alert, continue
+            pass
 

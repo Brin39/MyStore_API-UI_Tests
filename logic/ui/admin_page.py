@@ -161,13 +161,13 @@ class AdminProductsPage(BasePage):
     def click_delete_product(self, product_id: str):
         """Click delete button for product"""
         row = self.find_by_testid(f"admin-product-row-{product_id}")
-        delete_btn = row.find_element(By.CSS_SELECTOR, '[data-testid="delete-btn"]')
+        delete_btn = row.find_element(By.CSS_SELECTOR, f'[data-testid="admin-product-{product_id}-delete-btn"]')
         delete_btn.click()
     
     def confirm_delete(self):
         """Confirm delete action"""
         self.click_by_testid(self.CONFIRM_BTN)
-    
+
     def cancel_delete(self):
         """Cancel delete action"""
         self.click_by_testid(self.CANCEL_ALERT_BTN)
@@ -184,6 +184,9 @@ class AdminUsersPage(BasePage):
     USER_LIST = "admin-user-list"
     SEARCH_INPUT = "admin-search-input"
     NO_USERS_MESSAGE = "no-users-message"
+    
+    # Alert modal
+    CONFIRM_BTN = "confirm-alert-btn"
     
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -229,24 +232,10 @@ class AdminUsersPage(BasePage):
     
     def confirm_delete(self):
         """Confirm delete action"""
-        self.click_by_testid("confirm-alert-btn")
+        self.click_by_testid(self.CONFIRM_BTN)
+    
+    # Note: confirm_browser_alert() is inherited from BasePage
 
-    
-    def confirm_browser_alert(self):
-        """Confirm delete action - handle browser alert"""
-        # Wait for alert to appear and accept it
-        alert = WebDriverWait(self.driver, 5).until(EC.alert_is_present())
-        alert.accept()
-        
-        # Handle error alert that may appear after deletion
-        try:
-            error_alert = WebDriverWait(self.driver, 2).until(EC.alert_is_present())
-            error_alert.accept()
-        except Exception:
-            # No error alert, continue
-            pass
-        
-    
     def is_edit_form_visible(self) -> bool:
         """Check if edit form is visible"""
         return self.is_visible_by_testid("user-edit-form", timeout=3)
@@ -269,6 +258,9 @@ class AdminOrdersPage(BasePage):
     # Test IDs
     ORDERS_LIST = "admin-orders-list"
     SEARCH_INPUT = "admin-search-input"
+    
+    # Alert modal
+    CONFIRM_BTN = "confirm-alert-btn"
     
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -306,9 +298,9 @@ class AdminOrdersPage(BasePage):
     
     def click_delete_order(self, order_id: str):
         """Click delete order button"""
-        self.click_by_testid(f"order-delete-{order_id}")
+        self.click_by_testid(f"order-{order_id}-delete-btn")
     
     def confirm_action(self):
         """Confirm action in modal"""
-        self.click_by_testid("confirm-alert-btn")
+        self.click_by_testid(self.CONFIRM_BTN)
 
