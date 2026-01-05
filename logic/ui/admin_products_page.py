@@ -12,9 +12,10 @@ class AdminProductsPage(BasePage):
     """Admin products page interactions"""
     
     # Test IDs
+    PRODUCT_CONTAINER = "admin-page-content"
     PRODUCT_LIST = "admin-product-list"
     SEARCH_INPUT = "admin-search-input"
-    ADD_BUTTON = "admin-add-button"
+    ADD_BUTTON = "admin-add-btn"
     TOTAL_COUNT = "admin-total-count"
     
     # Product form
@@ -25,7 +26,7 @@ class AdminProductsPage(BasePage):
     STOCK_INPUT = "product-stock-input"
     CATEGORY_INPUT = "product-category-input"
     BEST_OFFER_CHECKBOX = "product-best-offer-checkbox"
-    SAVE_BTN = "edit-product-save-btn"
+    CREATE_BTN = "create-product-submit-btn"
     CANCEL_BTN = "edit-product-cancel-btn"
     
     # Alert modal
@@ -43,6 +44,7 @@ class AdminProductsPage(BasePage):
     def click_add_product(self):
         """Click add product button"""
         self.click_by_testid(self.ADD_BUTTON)
+        
     
     def search_products(self, query: str):
         """Search products"""
@@ -88,9 +90,9 @@ class AdminProductsPage(BasePage):
             if not checkbox.is_selected():
                 checkbox.click()
     
-    def click_save(self):
-        """Click save button"""
-        self.click_by_testid(self.SAVE_BTN)
+    def click_create(self):
+        """Click create button"""
+        self.click_by_testid(self.CREATE_BTN)
     
     def click_cancel(self):
         """Click cancel button"""
