@@ -40,13 +40,10 @@ class AdminOrdersPage(BasePage):
         """Get order status"""
         return self.get_text_by_testid(f"order-status-{order_id}")
     
-    def click_change_status(self, order_id: str):
-        """Click change status button"""
-        self.click_by_testid(f"order-change-status-{order_id}")
+    def click_update_status(self, order_id: str):
+        """Click update status button"""
+        self.click_by_testid(f"order-{order_id}-edit-btn")
     
-    def select_status(self, status: str):
-        """Select status from dropdown"""
-        self.click_by_testid(f"status-option-{status}")
     
     def click_cancel_order(self, order_id: str):
         """Click cancel order button"""
@@ -57,6 +54,6 @@ class AdminOrdersPage(BasePage):
         self.click_by_testid(f"order-{order_id}-delete-btn")
     
     def confirm_action(self):
-        """Confirm action in modal"""
-        self.click_by_testid(self.CONFIRM_BTN)
+        """Confirm action - handle browser alert"""
+        self.confirm_browser_alert()
 
