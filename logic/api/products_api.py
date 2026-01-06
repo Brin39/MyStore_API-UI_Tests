@@ -3,7 +3,7 @@ Products API client for MyStore.
 Handles product listing and search operations.
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, List
 from infra.api_wrapper import ApiWrapper
 from utils.constants import ApiEndpoints
 

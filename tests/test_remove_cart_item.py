@@ -17,7 +17,7 @@ class TestRemoveCartItem:
         logged_in_browser,
         cart_api,
         get_random_product
-    ):
+    , driver):
         """
         Test removing item from cart.
         

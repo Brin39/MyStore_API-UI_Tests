@@ -47,7 +47,7 @@ class AdminOrdersPage(BasePage):
     
     def click_cancel_order(self, order_id: str):
         """Click cancel order button"""
-        self.click_by_testid(f"order-cancel-{order_id}")
+        self.click_by_testid(f"order-{order_id}-cancel-btn")
     
     def click_delete_order(self, order_id: str):
         """Click delete order button"""

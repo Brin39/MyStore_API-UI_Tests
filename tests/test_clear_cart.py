@@ -49,7 +49,6 @@ class TestClearCart:
         # Verify cart has items via API
         cart_before = cart_api.get_cart(token)
         items_before = cart_before.get("items", [])
-        assert len(items_before) >= 1, "Cart should have at least 1 item before clearing"
         
         # Act - Navigate to cart via UI click (preserves localStorage)
         cart_page = CartPage(driver)
@@ -74,6 +73,7 @@ class TestClearCart:
         api_items_count = len(cart.get("items", []))
         
         # Assert
+        assert len(items_before) == 2, "Cart should have 2 items before clearing"
         assert cart_had_items, "Cart should have items before clearing"
         assert cart_is_empty, "Cart should be empty after clearing"
         assert api_items_count == 0, f"Cart should be empty (API verification). Found {api_items_count} items"

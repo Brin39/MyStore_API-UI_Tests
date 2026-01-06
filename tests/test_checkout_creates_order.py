@@ -19,7 +19,8 @@ class TestCheckoutCreatesOrder:
         logged_in_browser,
         cart_api,
         orders_api,
-        get_random_product
+        get_random_product,
+        cleanup
     ):
         """
         Test checkout creates new order.
@@ -57,6 +58,16 @@ class TestCheckoutCreatesOrder:
         
         new_orders_count = orders_page.get_orders_count()
         api_orders_count = orders_api.get_orders_count(token)
+        
+        # Register created order for cleanup
+        # Get all orders and find the new one (created after initial_orders)
+        api_orders = orders_api.get_my_orders(token)
+        if len(api_orders) > initial_orders:
+            # Get the newest order (first in list, assuming API returns newest first)
+            new_order = api_orders[0]
+            order_id = new_order.get("_id")
+            if order_id:
+                cleanup.register_order(order_id)
         
         # Assert
         assert new_orders_count > initial_orders, \

@@ -1,15 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fa0deac-f579-47c7-8866-cdc4fd2ede6e" name="Changes" comment="" />
+    <list default="true" id="9fa0deac-f579-47c7-8866-cdc4fd2ede6e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/MyStore_API&amp;UI_Tests.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MyStore_API&amp;UI_Tests.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/api/products_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/api/products_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/admin_orders_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/admin_orders_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/home_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/home_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_checkout_creates_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_checkout_creates_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_clear_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_clear_cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_remove_cart_item.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_remove_cart_item.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/cleanup_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/cleanup_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/constants.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Brin39&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Brin39/MyStore_API-UI_Tests.git&quot;,
+    &quot;accountId&quot;: &quot;dd06e6f5-8ea4-47a5-acf9-89af229ec3e8&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="377acsLXD5GO0IdlBHvBFloN5u2" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -18,7 +49,42 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "Python tests.Python tests in test_add_product_to_cart.py.executor": "Run",
+    "Python tests.Python tests in test_admin_cancel_order.py.executor": "Run",
+    "Python tests.Python tests in test_admin_change_order_status.py.executor": "Run",
+    "Python tests.Python tests in test_admin_create_product.py.executor": "Run",
+    "Python tests.Python tests in test_admin_dashboard_stats.py.executor": "Run",
+    "Python tests.Python tests in test_admin_delete_order.py.executor": "Run",
+    "Python tests.Python tests in test_admin_delete_product.py.executor": "Run",
+    "Python tests.Python tests in test_admin_delete_user.py.executor": "Run",
+    "Python tests.Python tests in test_admin_edit_product.py.executor": "Run",
+    "Python tests.Python tests in test_admin_edit_user.py.executor": "Run",
+    "Python tests.Python tests in test_admin_sees_order.py.executor": "Run",
+    "Python tests.Python tests in test_admin_sees_user.py.executor": "Run",
+    "Python tests.Python tests in test_admin_view_products.py.executor": "Run",
+    "Python tests.Python tests in test_checkout_creates_order.py.executor": "Run",
+    "Python tests.Python tests in test_clear_cart.py.executor": "Run",
+    "Python tests.Python tests in test_decrease_cart_quantity.py.executor": "Run",
+    "Python tests.Python tests in test_home_page_displays_products.py.executor": "Run",
+    "Python tests.Python tests in test_increase_cart_quantity.py.executor": "Run",
+    "Python tests.Python tests in test_login_invalid_password.py.executor": "Run",
+    "Python tests.Python tests in test_login_nonexistent_email.py.executor": "Run",
+    "Python tests.Python tests in test_login_valid_credentials.py.executor": "Run",
+    "Python tests.Python tests in test_product_modal_details.py.executor": "Run",
+    "Python tests.Python tests in test_register_existing_email.py.executor": "Run",
+    "Python tests.Python tests in test_register_new_user.py.executor": "Run",
+    "Python tests.Python tests in test_remove_cart_item.py.executor": "Run",
+    "Python tests.Python tests in test_search_finds_products.py.executor": "Run",
+    "Python tests.Python tests in test_search_no_results.py.executor": "Run",
+    "Python tests.Python tests in test_update_profile.py.executor": "Run",
+    "Python tests.Python tests in test_view_cart.py.executor": "Run",
+    "Python tests.Python tests in test_view_order_details.py.executor": "Run",
+    "Python tests.Python tests in test_view_orders_list.py.executor": "Run",
+    "Python tests.Python tests in test_view_profile.py.executor": "Run",
+    "Python.test_admin_edit_product.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main"
   }
 }]]></component>
   <component name="SharedIndexes">

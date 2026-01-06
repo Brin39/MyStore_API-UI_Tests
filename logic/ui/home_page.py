@@ -18,7 +18,7 @@ class HomePage(BasePage):
     SEARCH_INPUT = "search-input"
     SEARCH_BTN = "search-btn"
     CART_LINK = "cart-link"
-    CART_COUNT = "cart-count"
+    CART_COUNT = "cart-badge"
     NAV_LOGIN_LINK = "nav-login-link"
     NAV_REGISTER_LINK = "nav-register-link"
     PRODUCT_LIST = "product-list"
@@ -49,6 +49,10 @@ class HomePage(BasePage):
     
     def get_cart_count(self) -> int:
         """Get cart items count from header"""
+        # If cart is empty, the badge element doesn't exist
+        if not self.is_visible_by_testid(self.CART_COUNT, timeout=2):
+            return 0
+        
         text = self.get_text_by_testid(self.CART_COUNT)
         try:
             return int(text)
