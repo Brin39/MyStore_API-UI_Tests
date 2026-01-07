@@ -12,12 +12,7 @@ class AdminUsersPage(BasePage):
     """Admin users page interactions"""
     
     # Test IDs
-    USER_LIST = "admin-user-list"
     SEARCH_INPUT = "admin-search-input"
-    NO_USERS_MESSAGE = "no-users-message"
-    
-    # Alert modal
-    CONFIRM_BTN = "confirm-alert-btn"
     
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -30,13 +25,6 @@ class AdminUsersPage(BasePage):
         """Search users"""
         self.type_by_testid(self.SEARCH_INPUT, query)
     
-    def get_users_count(self) -> int:
-        """Get number of displayed users"""
-        cards = self.driver.find_elements(
-            By.CSS_SELECTOR, '[data-testid^="admin-user-card-"]'
-        )
-        return len(cards)
-    
     def is_user_visible(self, user_id: str) -> bool:
         """Check if user card is visible"""
         return self.is_visible_by_testid(f"admin-user-row-{user_id}", timeout=3)
@@ -45,40 +33,39 @@ class AdminUsersPage(BasePage):
         """Get user name"""
         return self.get_text_by_testid(f"admin-user-name-{user_id}")
     
-    def get_user_email(self, user_id: str) -> str:
-        """Get user email"""
-        return self.get_text_by_testid(f"admin-user-email-{user_id}")
-    
-    def get_user_role(self, user_id: str) -> str:
-        """Get user role"""
-        return self.get_text_by_testid(f"admin-user-role-{user_id}")
-    
-    def click_edit_user(self, user_id: str):
-        """Click edit button for user"""
-        self.click_by_testid(f"admin-user-edit-{user_id}")
+    def click_view_user(self, user_id: str):
+        """Click view button to open user details modal"""
+        self.click_by_testid(f"admin-user-{user_id}-view-btn")
     
     def click_delete_user(self, user_id: str):
         """Click delete button for user"""
         self.click_by_testid(f"admin-user-{user_id}-delete-btn")
     
-    def confirm_delete(self):
-        """Confirm delete action"""
-        self.click_by_testid(self.CONFIRM_BTN)
-    
     # Note: confirm_browser_alert() is inherited from BasePage
-
-    def is_edit_form_visible(self) -> bool:
-        """Check if edit form is visible"""
-        return self.is_visible_by_testid("user-edit-form", timeout=3)
     
-    def fill_user_form(self, name: str = None, email: str = None):
-        """Fill user edit form"""
-        if name:
-            self.type_by_testid("user-name-input", name)
-        if email:
-            self.type_by_testid("user-email-input", email)
+    # ==================== USER MODAL ====================
     
-    def click_save_user(self):
-        """Click save button"""
-        self.click_by_testid("save-form-btn")
+    def is_user_modal_visible(self) -> bool:
+        """Check if user modal is visible"""
+        return self.is_visible_by_testid("user-modal-name", timeout=5)
+    
+    def get_user_modal_name(self) -> str:
+        """Get user name from modal"""
+        return self.get_text_by_testid("user-modal-name")
+    
+    def get_user_modal_email(self) -> str:
+        """Get user email from modal"""
+        return self.get_text_by_testid("user-modal-email")
+    
+    def get_user_modal_id(self) -> str:
+        """Get user ID from modal"""
+        return self.get_text_by_testid("user-modal-detail-id")
+    
+    def get_user_modal_role(self) -> str:
+        """Get user role from modal"""
+        return self.get_text_by_testid("user-modal-detail-role")
+    
+    def close_user_modal(self):
+        """Close user modal"""
+        self.click_by_testid("user-modal-close-button")
 
