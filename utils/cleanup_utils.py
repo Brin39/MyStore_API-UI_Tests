@@ -51,16 +51,18 @@ class CleanupManager:
     def cleanup_all(self):
         """Clean up all registered resources"""
         total_resources = len(self._users) + len(self._products) + len(self._orders)
+        has_admin = self._admin_user_id is not None
         
         if not self.admin_api or not self.admin_token:
             logger.warning(
                 f"Admin API not configured, skipping cleanup. "
                 f"Resources not cleaned: {len(self._users)} users, "
                 f"{len(self._products)} products, {len(self._orders)} orders"
+                f"{', 1 admin' if has_admin else ''}"
             )
             return
         
-        if total_resources == 0:
+        if total_resources == 0 and not has_admin:
             return
         
         # Clean orders first (they may reference products/users)

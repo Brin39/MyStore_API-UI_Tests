@@ -12,7 +12,6 @@ class AdminOrdersPage(BasePage):
     """Admin orders page interactions"""
     
     # Test IDs
-    ORDERS_LIST = "admin-orders-list"
     SEARCH_INPUT = "admin-search-input"
     
     # Alert modal

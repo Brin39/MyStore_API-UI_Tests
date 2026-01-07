@@ -51,10 +51,6 @@ class BasePage:
         """Find clickable element"""
         return self.wait.until(EC.element_to_be_clickable(locator))
     
-    def find_visible(self, locator: Tuple[str, str]) -> WebElement:
-        """Find visible element"""
-        return self.wait.until(EC.visibility_of_element_located(locator))
-    
     # ==================== ELEMENT BY TEST ID ====================
     
     def find_by_testid(self, testid: str) -> WebElement:
@@ -88,24 +84,11 @@ class BasePage:
         except TimeoutException:
             return False
     
-    def is_present_by_testid(self, testid: str) -> bool:
-        """Check if element is present in DOM by data-testid"""
-        locator = (By.CSS_SELECTOR, f'[data-testid="{testid}"]')
-        elements = self.find_elements(locator)
-        return len(elements) > 0
-    
     # ==================== ACTIONS ====================
     
     def click(self, locator: Tuple[str, str]):
         """Click element"""
         self.find_clickable(locator).click()
-    
-    def type_text(self, locator: Tuple[str, str], text: str, clear: bool = True):
-        """Type text into input"""
-        element = self.find_element(locator)
-        if clear:
-            element.clear()
-        element.send_keys(text)
     
     def type_by_testid(self, testid: str, text: str, clear: bool = True):
         """Type text into input by data-testid"""
@@ -114,35 +97,11 @@ class BasePage:
             element.clear()
         element.send_keys(text)
     
-    def get_text(self, locator: Tuple[str, str]) -> str:
-        """Get element text"""
-        return self.find_element(locator).text
-    
     def get_attribute(self, locator: Tuple[str, str], attribute: str) -> str:
         """Get element attribute"""
         return self.find_element(locator).get_attribute(attribute)
     
-    def get_attribute_by_testid(self, testid: str, attribute: str) -> str:
-        """Get element attribute by data-testid"""
-        return self.find_by_testid(testid).get_attribute(attribute)
-    
     # ==================== VISIBILITY ====================
-    
-    def is_visible(self, locator: Tuple[str, str], timeout: int = None) -> bool:
-        """Check if element is visible"""
-        timeout = timeout or self.config.timeout
-        try:
-            WebDriverWait(self.driver, timeout).until(
-                EC.visibility_of_element_located(locator)
-            )
-            return True
-        except TimeoutException:
-            return False
-    
-    def is_present(self, locator: Tuple[str, str]) -> bool:
-        """Check if element is present in DOM"""
-        elements = self.find_elements(locator)
-        return len(elements) > 0
     
     def wait_for_url_contains(self, text: str, timeout: int = None) -> bool:
         """Wait until URL contains text"""
@@ -150,17 +109,6 @@ class BasePage:
         try:
             WebDriverWait(self.driver, timeout).until(
                 EC.url_contains(text)
-            )
-            return True
-        except TimeoutException:
-            return False
-    
-    def wait_for_element_invisible(self, locator: Tuple[str, str], timeout: int = None) -> bool:
-        """Wait until element becomes invisible"""
-        timeout = timeout or self.config.timeout
-        try:
-            WebDriverWait(self.driver, timeout).until(
-                EC.invisibility_of_element_located(locator)
             )
             return True
         except TimeoutException:

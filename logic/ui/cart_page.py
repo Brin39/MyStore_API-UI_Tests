@@ -13,10 +13,7 @@ class CartPage(BasePage):
     """Cart page interactions"""
     
     # Test IDs
-    CART_CONTENT = "cart-content"
-    CART_ITEMS_LIST = "cart-items-list"
     EMPTY_CART_MESSAGE = "empty-cart-message"
-    CART_SUMMARY = "cart-summary"
     CART_TOTAL = "cart-total"
     CHECKOUT_BTN = "checkout-btn"
     CLEAR_CART_BTN = "clear-cart-btn"
@@ -68,14 +65,6 @@ class CartPage(BasePage):
         """Get number of items in cart"""
         return len(self.get_cart_items())
     
-    def is_item_in_cart(self, product_id: str, timeout: int = 5) -> bool:
-        """Check if specific item is in cart"""
-        try:
-            self.is_visible_by_testid(f"cart-item-{product_id}", timeout=timeout)
-            return True
-        except:
-            return False
-    
     def wait_for_item_removed(self, product_id: str, timeout: int = 10):
         """Wait for item to be removed from cart"""
         from selenium.webdriver.support import expected_conditions as EC
@@ -126,14 +115,6 @@ class CartPage(BasePage):
         # Wait for delete button to be visible and clickable
         self.is_visible_by_testid(f"cart-item-{product_id}-delete-btn", timeout=10)
         self.click_by_testid(f"cart-item-{product_id}-delete-btn")
-    
-    def get_item_name(self, product_id: str) -> str:
-        """Get item name"""
-        return self.get_text_by_testid(f"cart-item-name-{product_id}")
-    
-    def get_item_price(self, product_id: str) -> str:
-        """Get item price"""
-        return self.get_text_by_testid(f"cart-item-price-{product_id}")
     
     # ==================== CART ACTIONS ====================
     

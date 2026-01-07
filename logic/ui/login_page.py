@@ -15,8 +15,6 @@ class LoginPage(BasePage):
     PASSWORD_INPUT = "password-input"
     SUBMIT_BTN = "submit-btn"
     ERROR_MESSAGE = "error-message"
-    REGISTER_LINK = "register-link"
-    LOGIN_FORM = "login-form"
     
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -49,21 +47,9 @@ class LoginPage(BasePage):
         self.enter_password(password)
         self.click_submit()
     
-    def get_error_message(self) -> str:
-        """Get error message text"""
-        return self.get_text_by_testid(self.ERROR_MESSAGE)
-    
     def is_error_visible(self) -> bool:
         """Check if error message is displayed"""
         return self.is_visible_by_testid(self.ERROR_MESSAGE, timeout=3)
-    
-    def click_register_link(self):
-        """Click link to registration page"""
-        self.click_by_testid(self.REGISTER_LINK)
-    
-    def is_login_form_visible(self) -> bool:
-        """Check if login form is visible"""
-        return self.is_visible_by_testid(self.LOGIN_FORM)
     
     def is_on_login_page(self) -> bool:
         """Check if current page is login page"""

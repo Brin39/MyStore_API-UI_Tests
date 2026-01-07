@@ -6,8 +6,8 @@
     "headless": false,
     "browser": "chrome",
     "admin": {
-        "email": "admin@test.com",
-        "password": "Admin123456"
+        "email": "admin@gmail.com",
+        "password": "brin123"
     },
     "admin_creation_code": "G!d0nizʞ!Ñɠ"
 }

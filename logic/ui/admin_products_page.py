@@ -12,14 +12,10 @@ class AdminProductsPage(BasePage):
     """Admin products page interactions"""
     
     # Test IDs
-    PRODUCT_CONTAINER = "admin-page-content"
-    PRODUCT_LIST = "admin-product-list"
     SEARCH_INPUT = "admin-search-input"
     ADD_BUTTON = "admin-add-btn"
-    TOTAL_COUNT = "admin-total-count"
     
     # Product form
-    PRODUCT_FORM = "product-form"
     NAME_INPUT = "product-name-input"
     DESCRIPTION_INPUT = "product-description-input"
     PRICE_INPUT = "product-price-input"
@@ -27,12 +23,7 @@ class AdminProductsPage(BasePage):
     CATEGORY_INPUT = "product-category-input"
     BEST_OFFER_CHECKBOX = "product-best-offer-checkbox"
     CREATE_BTN = "create-product-submit-btn"
-    CANCEL_BTN = "edit-product-cancel-btn"
-    
-    # Alert modal
-    ALERT_MODAL = "alert-modal"
-    CONFIRM_BTN = "confirm-alert-btn"
-    CANCEL_ALERT_BTN = "cancel-alert-btn"
+    SAVE_BTN = "edit-product-save-btn"
     
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -57,15 +48,7 @@ class AdminProductsPage(BasePage):
         )
         return len(rows)
     
-    def get_total_count_text(self) -> str:
-        """Get total count text"""
-        return self.get_text_by_testid(self.TOTAL_COUNT)
-    
     # ==================== PRODUCT FORM ====================
-    
-    def is_form_visible(self) -> bool:
-        """Check if product form is visible"""
-        return self.is_visible_by_testid(self.PRODUCT_FORM, timeout=3)
     
     def fill_product_form(
         self,
@@ -91,12 +74,12 @@ class AdminProductsPage(BasePage):
                 checkbox.click()
     
     def click_create(self):
-        """Click create button"""
+        """Click create button (for new product)"""
         self.click_by_testid(self.CREATE_BTN)
     
-    def click_cancel(self):
-        """Click cancel button"""
-        self.click_by_testid(self.CANCEL_BTN)
+    def click_save(self):
+        """Click save button (for editing product)"""
+        self.click_by_testid(self.SAVE_BTN)
     
     # ==================== PRODUCT ACTIONS ====================
     
@@ -112,14 +95,6 @@ class AdminProductsPage(BasePage):
         row = self.find_by_testid(f"admin-product-row-{product_id}")
         delete_btn = row.find_element(By.CSS_SELECTOR, f'[data-testid="admin-product-{product_id}-delete-btn"]')
         delete_btn.click()
-    
-    def confirm_delete(self):
-        """Confirm delete action"""
-        self.click_by_testid(self.CONFIRM_BTN)
-
-    def cancel_delete(self):
-        """Cancel delete action"""
-        self.click_by_testid(self.CANCEL_ALERT_BTN)
     
     def is_product_visible(self, product_id: str) -> bool:
         """Check if product row is visible"""

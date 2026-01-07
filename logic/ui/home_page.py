@@ -13,18 +13,12 @@ class HomePage(BasePage):
     """Home page interactions"""
     
     # Test IDs
-    HEADER = "header"
-    LOGO = "logo"
     SEARCH_INPUT = "search-input"
     SEARCH_BTN = "search-btn"
     CART_LINK = "cart-link"
     CART_COUNT = "cart-badge"
-    NAV_LOGIN_LINK = "nav-login-link"
-    NAV_REGISTER_LINK = "nav-register-link"
-    PRODUCT_LIST = "product-list"
     PRODUCT_MODAL = "product-modal"
     ADD_TO_CART_BTN = "add-to-cart-btn"
-    MODAL_CLOSE_BTN = "modal-close-btn"
     
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -39,14 +33,6 @@ class HomePage(BasePage):
     
     # ==================== HEADER ====================
     
-    def click_logo(self):
-        """Click logo to go home"""
-        self.click_by_testid(self.LOGO)
-    
-    def click_cart(self):
-        """Click cart link"""
-        self.click_by_testid(self.CART_LINK)
-    
     def get_cart_count(self) -> int:
         """Get cart items count from header"""
         # If cart is empty, the badge element doesn't exist
@@ -58,14 +44,6 @@ class HomePage(BasePage):
             return int(text)
         except ValueError:
             return 0
-    
-    def click_login_link(self):
-        """Click login link in nav"""
-        self.click_by_testid(self.NAV_LOGIN_LINK)
-    
-    def click_register_link(self):
-        """Click register link in nav"""
-        self.click_by_testid(self.NAV_REGISTER_LINK)
     
     def is_authenticated(self) -> bool:
         """Check if user is authenticated (cart link visible, login not)"""
@@ -79,10 +57,6 @@ class HomePage(BasePage):
         self.click_by_testid(self.SEARCH_BTN)
     
     # ==================== PRODUCTS ====================
-    
-    def get_product_cards(self) -> List:
-        """Get all product cards"""
-        return self.find_all_by_testid("product-card")
     
     def get_product_count(self) -> int:
         """Get number of displayed products"""
@@ -117,18 +91,9 @@ class HomePage(BasePage):
         """Click add to cart button in modal"""
         self.click_by_testid(self.ADD_TO_CART_BTN)
     
-    def close_product_modal(self):
-        """Close product modal"""
-        self.click_by_testid(self.MODAL_CLOSE_BTN)
-    
     def add_first_product_to_cart(self):
         """Click first product, add to cart"""
         self.click_first_product()
         self.is_product_modal_visible()
         self.click_add_to_cart()
-    
-    def is_on_home_page(self) -> bool:
-        """Check if on home page"""
-        url = self.get_current_url()
-        return url.endswith("/") or Urls.USER_HOME in url
 

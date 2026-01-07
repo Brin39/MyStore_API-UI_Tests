@@ -27,9 +27,8 @@ def cleanup(admin_api, auth_api, config) -> Generator[CleanupManager, None, None
     If config admin fails, creates a test admin for cleanup.
     """
     manager = CleanupManager()
-    cleanup_admin_id = None
     
-    # Try to login with config admin first
+    # Try to login with config admin - this is required for cleanup to work
     try:
         admin_result = auth_api.login(config.admin_email, config.admin_password)
         admin_token = admin_result.get("token")
@@ -37,40 +36,16 @@ def cleanup(admin_api, auth_api, config) -> Generator[CleanupManager, None, None
             manager.set_admin_api(admin_api, admin_token)
             logger.debug("Cleanup manager configured with admin token from config")
         else:
-            logger.warning("Failed to get admin token from config - will create test admin")
+            logger.warning("Failed to get admin token from config - cleanup will not work")
     except Exception as e:
-        logger.warning(f"Failed to login with config admin: {e} - will create test admin for cleanup")
-    
-    # If admin API not configured, create a test admin for cleanup directly
-    if not manager.admin_api or not manager.admin_token:
-        try:
-            admin_data = DataFactory.user(password="CleanupAdmin123")
-            admin_data["name"] = f"CleanupAdmin_{admin_data['name']}"
-            
-            result = auth_api.register_admin(
-                name=admin_data["name"],
-                email=admin_data["email"],
-                password=admin_data["password"],
-                admin_code=config.admin_creation_code
-            )
-            
-            cleanup_admin_id = result.get("_id") or result.get("user", {}).get("_id")
-            admin_token = result.get("token")
-            
-            if admin_token and cleanup_admin_id:
-                # Register cleanup admin for deletion (will be deleted last)
-                manager.register_user(cleanup_admin_id, is_admin=True)
-                manager.set_admin_api(admin_api, admin_token)
-                logger.info(f"Cleanup manager configured with test admin token (admin_id: {cleanup_admin_id})")
-            else:
-                logger.warning("Failed to get token or ID from test admin - cleanup may not work")
-        except Exception as e:
-            logger.error(f"Failed to create test admin for cleanup: {e} - cleanup will not work")
+        logger.warning(
+            f"Failed to login with config admin: {e} - cleanup will not work. "
+            f"Please check config.admin_email and config.admin_password in config.json"
+        )
     
     yield manager
     
     # Cleanup all registered resources after test
-    # The cleanup admin (if created) will be deleted last as admin user
     manager.cleanup_all()
 
 

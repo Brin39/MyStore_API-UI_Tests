@@ -18,8 +18,6 @@ class RegisterPage(BasePage):
     ADMIN_CODE_INPUT = "admin-code-input"
     SUBMIT_BTN = "submit-btn"
     ERROR_MESSAGE = "error-message"
-    LOGIN_LINK = "login-link"
-    REGISTER_FORM = "register-form"
     SUCCESS_MODAL = "success-modal"
     SUCCESS_MESSAGE = "success-message"
     MODAL_LOGIN_BTN = "modal-login-btn"
@@ -82,10 +80,6 @@ class RegisterPage(BasePage):
         self.enter_admin_code(admin_code)
         self.click_submit()
     
-    def get_error_message(self) -> str:
-        """Get error message text"""
-        return self.get_text_by_testid(self.ERROR_MESSAGE)
-    
     def is_error_visible(self) -> bool:
         """Check if error message is displayed"""
         return self.is_visible_by_testid(self.ERROR_MESSAGE, timeout=3)
@@ -97,12 +91,4 @@ class RegisterPage(BasePage):
     def click_modal_login(self):
         """Click login button on success modal"""
         self.click_by_testid(self.MODAL_LOGIN_BTN)
-    
-    def click_login_link(self):
-        """Click link to login page"""
-        self.click_by_testid(self.LOGIN_LINK)
-    
-    def is_on_register_page(self) -> bool:
-        """Check if current page is register page"""
-        return Urls.REGISTER in self.get_current_url()
 

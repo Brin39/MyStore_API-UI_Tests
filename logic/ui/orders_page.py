@@ -14,9 +14,6 @@ class OrdersPage(BasePage):
     
     # Test IDs
     ORDERS_LIST = "orders-list"
-    NO_ORDERS_MESSAGE = "no-orders-message"
-    LOADING_SPINNER = "loading-spinner"
-    ERROR_MESSAGE = "error-message"
     
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -40,14 +37,6 @@ class OrdersPage(BasePage):
     
     # ==================== ORDERS STATE ====================
     
-    def has_no_orders(self) -> bool:
-        """Check if no orders message is shown"""
-        return self.is_visible_by_testid(self.NO_ORDERS_MESSAGE, timeout=3)
-    
-    def is_loading(self) -> bool:
-        """Check if loading spinner is shown"""
-        return self.is_visible_by_testid(self.LOADING_SPINNER, timeout=1)
-    
     def wait_for_orders_loaded(self):
         """Wait for orders to finish loading"""
         # Wait for loading to disappear or orders to appear
@@ -68,14 +57,6 @@ class OrdersPage(BasePage):
     def get_order_status(self, order_id: str) -> str:
         """Get order status text"""
         return self.get_text_by_testid(f"order-status-{order_id}")
-    
-    def get_order_total(self, order_id: str) -> str:
-        """Get order total text"""
-        return self.get_text_by_testid(f"order-total-{order_id}")
-    
-    def get_order_date(self, order_id: str) -> str:
-        """Get order date text"""
-        return self.get_text_by_testid(f"order-date-{order_id}")
     
     def is_order_visible(self, order_id: str) -> bool:
         """Check if order card is visible"""

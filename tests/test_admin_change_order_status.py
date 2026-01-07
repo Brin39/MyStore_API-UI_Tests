@@ -2,6 +2,7 @@
 Test admin can change order status.
 """
 
+import time
 import pytest
 
 
@@ -36,13 +37,29 @@ class TestAdminChangeOrderStatus:
         order = create_test_order(user_token)
         order_id = order.get("_id") or order.get("order", {}).get("_id")
         
+        # Verify initial status is "pending"
+        initial_orders = admin_api.get_orders(token)
+        initial_order = next(
+            (o for o in initial_orders if o["_id"] == order_id),
+            None
+        )
+        
         # Act
         admin_orders_page.open()
+        
+        # Verify initial status in UI
+        initial_displayed_status = admin_orders_page.get_order_status(order_id)
+        time.sleep(1)
+
+        # Change status
         admin_orders_page.click_update_status(order_id)
         admin_orders_page.confirm_action()
         
+        # Wait for status update
+        time.sleep(0.5)
         
-        admin_orders_page.refresh()
+        
+        # Get updated status from UI
         displayed_status = admin_orders_page.get_order_status(order_id)
         
         # Verify via API
@@ -53,9 +70,14 @@ class TestAdminChangeOrderStatus:
         )
         
         # Assert
+        assert initial_order is not None, "Order should exist"
+        assert initial_order.get("status") == "pending", \
+            f"Initial order status should be 'pending', got '{initial_order.get('status')}'"
+        assert "pending" in initial_displayed_status.lower(), \
+            f"UI should display initial 'pending' status, got '{initial_displayed_status}'"
         assert updated_order is not None, "Order should exist"
         assert updated_order.get("status") == "processing", \
             f"Order status should be 'processing', got '{updated_order.get('status')}'"
         assert "processing" in displayed_status.lower(), \
-            "UI should display updated status"
+            f"UI should display updated status 'processing', got '{displayed_status}'"
 

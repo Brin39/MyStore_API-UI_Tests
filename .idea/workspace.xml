@@ -5,18 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9fa0deac-f579-47c7-8866-cdc4fd2ede6e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/MyStore_API&amp;UI_Tests.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MyStore_API&amp;UI_Tests.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/api/products_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/api/products_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixtures/cleanup.py" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/cleanup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/admin_dashboard_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/admin_dashboard_page.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/ui/admin_orders_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/admin_orders_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/admin_products_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/admin_products_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/base_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/cart_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/cart_page.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/ui/home_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/home_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_checkout_creates_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_checkout_creates_order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_clear_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_clear_cart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_remove_cart_item.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_remove_cart_item.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/login_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/login_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/orders_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/orders_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/profile_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/profile_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/ui/register_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/register_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_admin_change_order_status.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_admin_change_order_status.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_admin_edit_user.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_view_orders_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_view_orders_list.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/cleanup_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/cleanup_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/constants.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +67,7 @@
     "Python tests.Python tests in test_admin_sees_order.py.executor": "Run",
     "Python tests.Python tests in test_admin_sees_user.py.executor": "Run",
     "Python tests.Python tests in test_admin_view_products.py.executor": "Run",
+    "Python tests.Python tests in test_admin_view_user.py.executor": "Run",
     "Python tests.Python tests in test_checkout_creates_order.py.executor": "Run",
     "Python tests.Python tests in test_clear_cart.py.executor": "Run",
     "Python tests.Python tests in test_decrease_cart_quantity.py.executor": "Run",

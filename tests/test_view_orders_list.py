@@ -55,5 +55,5 @@ class TestViewOrdersList:
         assert order_id in api_order_ids, \
             f"Order {order_id} should exist in API. Found: {api_order_ids}"
         assert is_on_orders, "Should be on orders page"
-        assert orders_count >= 1, \
-            f"Should have at least 1 order, got {orders_count}"
+        assert orders_count == 1, \
+            f"Should have  1 order, got {orders_count}"
