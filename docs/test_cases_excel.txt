@@ -1,34 +1,110 @@
-ID	Test Name	Priority	Arrange (API)	Act (UI)	Assert	Required Data/Fixtures
-1	Login with valid credentials	Critical	1. Create user via POST /api/auth/register with unique email and password	1. Open /login page 2. Enter email in login-email field 3. Enter password in login-password field 4. Click login-submit button 5. Wait for redirect	1. URL contains /user (redirect successful) 2. User is authenticated (UI shows authenticated state)	create_test_user, login_page, home_page
-2	Login with invalid password	High	1. Create user via API registration 2. Save email (will use wrong password)	1. Open /login 2. Enter correct email 3. Enter wrong password "WrongPassword123" 4. Click Login	1. Error message is visible 2. Still on login page	create_test_user, login_page
-3	Login with non-existent email	High	1. Generate unique email: nonexistent_{uuid}@test.com 2. Verify via auth_api.login_or_none() that email doesn't exist	1. Open /login 2. Enter non-existent email 3. Enter any password 4. Click Login	1. API confirms email doesn't exist 2. Error message is visible	auth_api, login_page
-4	Register new user	Critical	1. Generate unique user data: name, email, password	1. Open /register 2. Fill name field 3. Fill email field 4. Fill password field 5. Click Register 6. Wait for success modal 7. Click "Go to Login"	1. Success modal is visible 2. Redirected to login page	register_page, login_page, cleanup
-5	Register with existing email	High	1. Create user via API 2. Save email	1. Open /register 2. Enter any name 3. Enter existing user's email 4. Enter any password 5. Click Register	1. Error message about duplicate email is visible	create_test_user, register_page
-6	Home page displays products	Critical	1. Get all products via GET /api/products 2. Save products count	1. Open home page / 2. Wait for products to load 3. Count product cards	1. Products count > 0 2. UI products count <= API products count	products_api, home_page, browser
-7	Product modal shows correct details	High	1. Get first product from API (name, price, _id)	1. Open home page 2. Click on product card 3. Wait for modal to open	1. Products exist 2. Modal is visible 3. Modal name matches API 4. Modal price matches API	products_api, home_page, browser
-8	Search finds products	High	1. Get admin token 2. Create product with unique name UniqueSearchTest_{uuid} via Admin API 3. Save product_id	1. Open home page 2. Enter "UniqueSearchTest" in search field 3. Wait for results	1. Created product is visible in search results	create_test_product, get_admin_token, home_page, browser
-9	Search with no results	Medium	1. Generate unique string NonExistentProduct_{uuid}	1. Open home page 2. Search for unique string	1. Products count = 0	home_page, browser
-10	Add product to cart	Critical	1. Login user (logged_in_browser) 2. Clear cart via cart_api.clear_cart(token) 3. Get first product from API	1. Open /user home 2. Save current cart count 3. Click on product 4. Wait for modal 5. Click "Add to Cart" 6. Refresh page 7. Get new cart count	1. Products exist 2. Modal opened 3. New count > initial count 4. Product exists in cart (API verification)	logged_in_browser, cart_api, products_api, home_page
-11	View cart displays items	High	1. Login user 2. Clear cart 3. Add product with quantity=2 via API 4. Get cart from API, verify items count	1. Open /user/cart	1. On cart page 2. API items count > 0 3. Cart is not empty (UI) 4. Displayed quantity = 2	logged_in_browser, cart_api, products_api, cart_page
-12	Remove item from cart	High	1. Login user 2. Clear cart 3. Add 1 product via API	1. Open cart 2. Verify item is visible 3. Click Remove for item 4. Refresh page	1. Item was visible before 2. Cart is empty after 3. API confirms 0 items	logged_in_browser, cart_api, products_api, cart_page
-13	Clear cart removes all items	Medium	1. Login user 2. Add 2 different products via API	1. Open cart 2. Verify items exist 3. Click "Clear Cart" 4. Refresh page	1. Had items before 2. Cart is empty 3. API: 0 items	logged_in_browser, cart_api, products_api, cart_page
-14	Increase cart quantity	Medium	1. Login user 2. Clear cart 3. Add product with quantity=1	1. Open cart 2. Save initial quantity 3. Click increase (+) button 4. Refresh page 5. Get new quantity	1. New quantity = initial + 1	logged_in_browser, cart_api, products_api, cart_page
-15	Decrease cart quantity	Medium	1. Login user 2. Clear cart 3. Add product with quantity=2	1. Open cart 2. Save initial quantity (should be 2) 3. Click decrease (-) button 4. Refresh page 5. Get new quantity	1. Initial = 2 2. New = 1	logged_in_browser, cart_api, products_api, cart_page
-16	Checkout creates order	Critical	1. Login user 2. Clear cart 3. Add product 4. Save current orders count	1. Open cart 2. Click Checkout 3. Open orders page 4. Wait for load	1. Orders count increased 2. UI and API show same count	logged_in_browser, cart_api, orders_api, products_api, cart_page, orders_page
-17	View orders list	High	1. Login user (get token from localStorage) 2. Create order via API with token 3. Verify order exists in API	1. Click profile-button 2. Click dashboard-my-orders 3. Wait for orders page to load	1. Order exists in API 2. On orders page 3. Orders count >= 1	logged_in_browser, create_test_order, orders_api
-18	Order displays correct status	Medium	1. Login user 2. Create order 3. Get order from API, save status	1. Open orders page 2. Wait for load 3. Get displayed order status	1. Displayed status matches API status	logged_in_browser, create_test_order, orders_api, orders_page
-19	View profile displays user data	High	1. Login user 2. Get profile from API (name, email)	1. Open /user/profile 2. Get displayed name and email	1. On profile page 2. Displayed name = API name 3. Displayed email = API email	logged_in_browser, auth_api, profile_page
-20	Update profile saves changes	High	1. Login user 2. Generate new phone and address	1. Open profile 2. Click Edit 3. Change phone and address 4. Click Save 5. Refresh page	1. Get profile from API 2. Phone = new value 3. Address = new value	logged_in_browser, auth_api, profile_page
-21	Admin dashboard displays stats	High	1. Get admin token 2. Get stats from Admin API 3. Login as admin via UI	1. Open /admin 2. Check dashboard visibility 3. Check stats visibility	1. Dashboard is visible 2. Stats are visible 3. API returned data	get_admin_token, admin_api, admin_dashboard, config
-22	Admin creates product	Critical	1. Generate unique product name 2. Login as admin via UI	1. Open /admin/products 2. Click Add Product 3. Fill form: name, description, price, stock, category 4. Click Save 5. Open products page 6. Search for product	1. Product visible in list 2. Product exists in API	get_admin_token, admin_products_page, cleanup, config
-23	Admin views products list	High	1. Get admin token 2. Create product via API 3. Login as admin	1. Open /admin/products 2. Count products 3. Check created product visibility	1. Products count >= 1 2. Created product is visible	create_test_product, get_admin_token, admin_products_page, config
-24	Admin edits product	High	1. Create product via API 2. Generate new name and price 3. Login as admin	1. Open /admin/products 2. Click Edit for product 3. Change name and price 4. Click Save	1. Product exists in API 2. Name is updated 3. Price is updated	create_test_product, get_admin_token, admin_api, admin_products_page, config
-25	Admin deletes product	High	1. Create product via API 2. Login as admin	1. Open /admin/products 2. Verify product visible 3. Click Delete 4. Confirm deletion 5. Refresh page	1. Product was visible before 2. Product not visible after 3. Product doesn't exist in API	create_test_product, get_admin_token, admin_api, admin_products_page, config
-26	Admin sees created user	High	1. Create user via API 2. Save user_id and email 3. Login as admin	1. Open /admin/users 2. Search by email 3. Check user visibility 4. Get displayed email	1. User is visible 2. Email displayed correctly	create_test_user, admin_users_page, config
-27	Admin edits user	Medium	1. Create user 2. Generate new name 3. Login as admin	1. Open /admin/users 2. Find user 3. Click Edit 4. Change name 5. Click Save	1. Get user from API 2. Name is updated	create_test_user, get_admin_token, admin_api, admin_users_page, config
-28	Admin deletes user	Medium	1. Create user 2. Login as admin	1. Open /admin/users 2. Find user 3. Verify visibility 4. Click Delete 5. Confirm 6. Refresh page	1. Was visible before 2. Not visible after 3. Doesn't exist in API	create_test_user, get_admin_token, admin_api, admin_users_page, config
-29	Admin sees user order	High	1. Create user 2. Create order for user 3. Login as admin	1. Open /admin/orders 2. Check order visibility 3. Get order status	1. Order is visible 2. Status = "pending"	create_test_user, create_test_order, admin_orders_page, config
-30	Admin changes order status	High	1. Create user and order 2. Login as admin	1. Open /admin/orders 2. Click Change Status for order 3. Select "processing" 4. Refresh page	1. API: status = "processing" 2. UI shows "processing"	create_test_user, create_test_order, get_admin_token, admin_api, admin_orders_page, config
-31	Admin cancels order	Medium	1. Create user and order 2. Login as admin	1. Open /admin/orders 2. Click Cancel Order 3. Confirm 4. Refresh page	1. API: status = "cancelled" 2. UI shows "cancelled"	create_test_user, create_test_order, get_admin_token, admin_api, admin_orders_page, config
-32	Admin deletes order	Medium	1. Create user and order 2. Login as admin	1. Open /admin/orders 2. Verify order visible 3. Click Delete 4. Confirm 5. Refresh page	1. Order was visible 2. Order not visible 3. Order doesn't exist in API	create_test_user, create_test_order, get_admin_token, admin_api, admin_orders_page, config
+# MyStore Test Cases Documentation
 
+This document describes all test cases in the test automation framework, including their setup, execution steps, and verification criteria.
+
+## Test Case Format
+- **ID**: Unique test case identifier
+- **Test Name**: Descriptive name of the test
+- **Priority**: Critical, High, Medium
+- **Arrange (API)**: Test data setup via API
+- **Act (UI)**: User interface interactions using Page Objects
+- **Assert**: Verification criteria
+- **Required Fixtures**: Pytest fixtures needed for the test
+
+---
+
+## Authentication Tests
+
+| ID | Test Name | Priority | Arrange (API) | Act (UI) | Assert | Required Fixtures |
+|----|-----------|----------|---------------|----------|--------|-------------------|
+| 1 | Login with valid credentials | Critical | 1. Create user via API with unique email and password | 1. Open login page<br>2. Enter email and password<br>3. Click login button<br>4. Wait for redirect | 1. URL contains /user (redirect successful)<br>2. User is authenticated (UI shows authenticated state) | `create_test_user`, `login_page`, `home_page` |
+| 2 | Login with invalid password | High | 1. Create user via API registration<br>2. Save email (will use wrong password) | 1. Open login page<br>2. Enter correct email<br>3. Enter wrong password<br>4. Click login | 1. Error message is visible<br>2. Still on login page | `create_test_user`, `login_page` |
+| 3 | Login with non-existent email | High | 1. Create user via API (for setup verification)<br>2. Generate unique non-existent email<br>3. Verify via API that email doesn't exist | 1. Open login page<br>2. Enter non-existent email<br>3. Enter valid password format<br>4. Click login | 1. API confirms email doesn't exist<br>2. Error message is visible<br>3. Still on login page | `auth_api`, `login_page`, `create_test_user` |
+| 4 | Register new user | Critical | 1. Generate unique user data: name, email, password | 1. Open register page<br>2. Fill name, email, password fields<br>3. Click register<br>4. Wait for success modal<br>5. Click "Go to Login" | 1. Success modal is visible<br>2. Redirected to login page | `register_page`, `login_page`, `cleanup` |
+| 5 | Register with existing email | High | 1. Create user via API<br>2. Save email | 1. Open register page<br>2. Enter any name<br>3. Enter existing user's email<br>4. Enter any password<br>5. Click register | 1. Error message about duplicate email is visible | `create_test_user`, `register_page` |
+
+---
+
+## Product Display Tests
+
+| ID | Test Name | Priority | Arrange (API) | Act (UI) | Assert | Required Fixtures |
+|----|-----------|----------|---------------|----------|--------|-------------------|
+| 6 | Home page displays products | Critical | 1. Get all products via API<br>2. Save products count | 1. Open home page<br>2. Get product count from UI | 1. Products count > 0<br>2. UI products count == API products count | `products_api`, `home_page` |
+| 7 | Product modal shows correct details | High | 1. Get random product from API (name, price, description, _id) | 1. Open home page<br>2. Click on product card<br>3. Wait for modal content to load<br>4. Get modal details | 1. Products exist<br>2. Modal is visible<br>3. Modal name matches API<br>4. Modal price matches API<br>5. Modal description matches API | `get_random_product`, `home_page` |
+| 8 | Search finds products | High | 1. Create admin via API<br>2. Create product with unique name via Admin API<br>3. Save product_id | 1. Open home page<br>2. Search for product name<br>3. Wait for search results<br>4. Wait for product to be visible | 1. API returns exactly 1 product<br>2. UI displays exactly 1 product<br>3. Created product is visible | `create_test_admin`, `create_test_product`, `home_page`, `products_api` |
+| 9 | Search with no results | Medium | 1. Generate unique string that doesn't exist<br>2. Verify via API that no products match | 1. Open home page<br>2. Search for unique string<br>3. Wait for search results to change | 1. API returns 0 products<br>2. UI products count == 0 | `home_page`, `products_api` |
+
+---
+
+## Shopping Cart Tests
+
+| ID | Test Name | Priority | Arrange (API) | Act (UI) | Assert | Required Fixtures |
+|----|-----------|----------|---------------|----------|--------|-------------------|
+| 10 | Add product to cart | Critical | 1. Login user (logged_in_browser)<br>2. Clear cart via API<br>3. Get random product from API | 1. Open user home<br>2. Get initial cart count<br>3. Click on product<br>4. Wait for modal<br>5. Click "Add to Cart"<br>6. Get new cart count | 1. Products exist<br>2. Modal opened<br>3. New count > initial count<br>4. Product exists in cart (API verification) | `logged_in_browser`, `cart_api`, `get_random_product`, `home_page` |
+| 11 | View cart displays items | High | 1. Login user<br>2. Clear cart<br>3. Add product with quantity=2 via API<br>4. Get cart from API, verify items count | 1. Open cart page via UI<br>2. Check if on cart page<br>3. Get displayed quantity | 1. On cart page<br>2. API items count > 0<br>3. Cart is not empty (UI)<br>4. Displayed quantity == 2 | `logged_in_browser`, `cart_api`, `get_random_product`, `cart_page` |
+| 12 | Remove item from cart | High | 1. Login user<br>2. Clear cart<br>3. Add 1 product via API | 1. Open cart page via UI<br>2. Verify item is visible<br>3. Click remove item<br>4. Wait for item to be removed | 1. Item was visible before<br>2. Cart is empty after<br>3. API confirms 0 items | `logged_in_browser`, `cart_api`, `get_random_product`, `cart_page` |
+| 13 | Clear cart removes all items | Medium | 1. Login user<br>2. Add 2 different products via API | 1. Open cart page via UI<br>2. Verify items exist<br>3. Click "Clear Cart"<br>4. Wait for cart to be empty | 1. Had 2 items before<br>2. Cart is empty after<br>3. API: 0 items | `logged_in_browser`, `cart_api`, `get_random_product`, `cart_page` |
+| 14 | Increase cart quantity | Medium | 1. Login user<br>2. Clear cart<br>3. Add product with quantity=1 | 1. Open cart page via UI<br>2. Get initial quantity<br>3. Click increase (+) button<br>4. Wait for quantity to update<br>5. Wait for API to update | 1. New quantity == initial + 1<br>2. API quantity matches expected | `logged_in_browser`, `cart_api`, `get_random_product`, `cart_page` |
+| 15 | Decrease cart quantity | Medium | 1. Login user<br>2. Clear cart<br>3. Add product with quantity=2 | 1. Open cart page via UI<br>2. Get initial quantity (should be 2)<br>3. Click decrease (-) button<br>4. Wait for quantity to update<br>5. Wait for API to update | 1. Initial == 2<br>2. New == 1<br>3. API quantity matches expected | `logged_in_browser`, `cart_api`, `get_random_product`, `cart_page` |
+
+---
+
+## Order Management Tests
+
+| ID | Test Name | Priority | Arrange (API) | Act (UI) | Assert | Required Fixtures |
+|----|-----------|----------|---------------|----------|--------|-------------------|
+| 16 | Checkout creates order | Critical | 1. Login user<br>2. Clear cart<br>3. Add product<br>4. Save current orders count | 1. Open cart page via UI<br>2. Click checkout<br>3. Wait for checkout to complete<br>4. Open orders page via UI<br>5. Wait for orders to load | 1. Orders count increased<br>2. UI and API show same count | `logged_in_browser`, `cart_api`, `orders_api`, `get_random_product`, `cart_page`, `orders_page`, `cleanup` |
+| 17 | View orders list | High | 1. Login user<br>2. Create order via API<br>3. Verify order exists in API | 1. Open orders page via UI<br>2. Wait for orders to load | 1. Order exists in API<br>2. On orders page<br>3. Orders count >= 1 | `logged_in_browser`, `create_test_order`, `orders_api`, `orders_page` |
+| 18 | Order displays correct status | Medium | 1. Login user<br>2. Create order<br>3. Get order from API, save status | 1. Open orders page via UI<br>2. Wait for orders to load<br>3. Get displayed order status | 1. Displayed status matches API status | `logged_in_browser`, `create_test_order`, `orders_api`, `orders_page` |
+
+---
+
+## User Profile Tests
+
+| ID | Test Name | Priority | Arrange (API) | Act (UI) | Assert | Required Fixtures |
+|----|-----------|----------|---------------|----------|--------|-------------------|
+| 19 | Update profile saves changes | High | 1. Login user<br>2. Get current profile from API<br>3. Generate new phone and address | 1. Open profile page via UI<br>2. Update profile (phone, address)<br>3. Wait for profile to be saved<br>4. Get updated profile from API | 1. New phone != initial phone<br>2. Updated phone == new phone<br>3. New address != initial address<br>4. Updated address == new address | `logged_in_browser`, `auth_api`, `profile_page` |
+
+---
+
+## Admin Panel Tests
+
+| ID | Test Name | Priority | Arrange (API) | Act (UI) | Assert | Required Fixtures |
+|----|-----------|----------|---------------|----------|--------|-------------------|
+| 20 | Admin creates product | Critical | 1. Generate unique product name<br>2. Login as admin via UI | 1. Open admin products page<br>2. Click add product<br>3. Fill form: name, description, price, stock, category<br>4. Click create<br>5. Open products page<br>6. Search for product | 1. Product visible in list<br>2. Product exists in API | `logged_in_admin_browser`, `admin_products_page`, `admin_api`, `cleanup` |
+| 21 | Admin views products list | High | 1. Create admin via API<br>2. Create product via API<br>3. Login as admin via UI | 1. Open admin products page<br>2. Count products<br>3. Check created product visibility | 1. Products count >= 1<br>2. Created product is visible | `logged_in_admin_browser`, `create_test_product`, `admin_products_page`, `admin_api` |
+| 22 | Admin edits product | High | 1. Create admin via API<br>2. Create product via API<br>3. Generate new name and price<br>4. Login as admin via UI | 1. Open admin products page<br>2. Click edit for product<br>3. Change name and price<br>4. Click save | 1. Product exists in API<br>2. Name is updated<br>3. Price is updated | `logged_in_admin_browser`, `create_test_product`, `admin_api`, `admin_products_page` |
+| 23 | Admin deletes product | High | 1. Create admin via API<br>2. Create product via API<br>3. Login as admin via UI | 1. Open admin products page<br>2. Verify product visible<br>3. Click delete product<br>4. Confirm action | 1. Product was visible before<br>2. Product not visible after<br>3. Product doesn't exist in API | `logged_in_admin_browser`, `create_test_product`, `admin_api`, `admin_products_page` |
+| 24 | Admin views user | High | 1. Create user via API<br>2. Save user_id and email<br>3. Login as admin via UI | 1. Open admin users page<br>2. Search by email<br>3. Click view user<br>4. Get user details from modal<br>5. Close modal | 1. User modal is visible<br>2. Name matches API<br>3. Email matches API<br>4. ID matches<br>5. Role matches API | `logged_in_admin_browser`, `create_test_user`, `admin_users_page`, `admin_api` |
+| 25 | Admin deletes user | Medium | 1. Create admin via API<br>2. Create user via API<br>3. Login as admin via UI | 1. Open admin users page<br>2. Find user<br>3. Verify visibility<br>4. Click delete<br>5. Confirm action | 1. Was visible before<br>2. Not visible after<br>3. Doesn't exist in API | `logged_in_admin_browser`, `create_test_user`, `admin_api`, `admin_users_page` |
+| 26 | Admin sees user order | High | 1. Create admin via API<br>2. Create user and order via API<br>3. Login as admin via UI | 1. Open admin orders page<br>2. Check order visibility<br>3. Get order status | 1. Order is visible<br>2. Status == "pending" | `logged_in_admin_browser`, `create_test_user`, `create_test_order`, `admin_orders_page` |
+| 27 | Admin changes order status | High | 1. Create admin via API<br>2. Create user and order via API<br>3. Login as admin via UI | 1. Open admin orders page<br>2. Get initial status<br>3. Click update status<br>4. Confirm action<br>5. Wait for status update<br>6. Get updated status | 1. Initial status == "pending"<br>2. API: updated status == "processing"<br>3. UI shows "processing" | `logged_in_admin_browser`, `create_test_user`, `create_test_order`, `admin_api`, `admin_orders_page` |
+| 28 | Admin cancels order | Medium | 1. Create admin via API<br>2. Create user and order via API<br>3. Login as admin via UI | 1. Open admin orders page<br>2. Click cancel order<br>3. Confirm action<br>4. Wait for status update | 1. API: status == "cancelled"<br>2. UI shows "cancelled" | `logged_in_admin_browser`, `create_test_user`, `create_test_order`, `admin_api`, `admin_orders_page` |
+| 29 | Admin deletes order | Medium | 1. Create admin via API<br>2. Create user and order via API<br>3. Login as admin via UI | 1. Open admin orders page<br>2. Verify order visible<br>3. Click delete order<br>4. Confirm action | 1. Order was visible<br>2. Order not visible after<br>3. Order doesn't exist in API | `logged_in_admin_browser`, `create_test_user`, `create_test_order`, `admin_api`, `admin_orders_page` |
+
+---
+
+## Notes
+
+### Key Changes After Refactoring:
+- **Page Object Methods**: All UI interactions now use Page Object methods instead of direct Selenium calls
+- **Wait Methods**: Replaced `time.sleep()` and manual refreshes with Page Object wait methods (e.g., `wait_for_search_results()`, `wait_for_cart_empty()`, `wait_for_item_quantity()`)
+- **Navigation**: Navigation now uses Page Object methods (e.g., `open_via_ui()`) instead of direct Selenium calls
+- **API Wait Logic**: Cart quantity changes now use `CartApi.wait_for_item_quantity()` for reliable API verification
+- **Cleanup**: All test data is automatically cleaned up via fixtures - no manual cleanup needed
+
+### Common Page Object Methods:
+- `open()` - Navigate to page via URL
+- `open_via_ui()` - Navigate to page via UI clicks (preserves session)
+- `wait_for_*()` - Wait for specific conditions (replaces time.sleep)
+- `get_*()` - Get data from page
+- `click_*()` - Click elements
+- `is_*()` - Check page state
+
+### Fixture Usage:
+- `logged_in_browser` - Creates user, logs in via UI, returns user data and browser
+- `logged_in_admin_browser` - Creates admin, logs in via UI, returns admin data and browser
+- `create_test_user` - Creates user via API, auto-registers for cleanup
+- `create_test_product` - Creates product via API, auto-registers for cleanup
+- `create_test_order` - Creates order via API, auto-registers for cleanup
+- `cleanup` - Automatically cleans up all registered test data after test
