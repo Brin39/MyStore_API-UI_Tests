@@ -2,11 +2,8 @@
 Test search finds products by name.
 """
 
-import time
 import pytest
-from selenium.webdriver.support.ui import WebDriverWait
 from utils.data_factory import DataFactory
-from logic.api.products_api import ProductsApi
 
 
 class TestSearchFindsProducts:
@@ -18,7 +15,7 @@ class TestSearchFindsProducts:
         home_page,
         create_test_product,
         create_test_admin,
-        cleanup
+        products_api
     ):
         """
         Test search finds products by name.
@@ -38,32 +35,16 @@ class TestSearchFindsProducts:
         # Act
         home_page.open()
         
-        # Get initial products count (before search)
-        initial_count = home_page.get_product_count()
-        
         # Use full product name for search to ensure match
         home_page.search(product_name)
         
-        # Wait for search results to update (polling until count becomes 1)
-        driver = home_page.driver
-        wait = WebDriverWait(driver, 10)
-        
-        # Wait until exactly 1 product is displayed (search results filtered)
-        wait.until(
-            lambda d: home_page.get_product_count() == 1
-        )
+        # Wait for search results to update
+        home_page.wait_for_search_results(expected_count=1)
         
         # Wait until product is visible
-        try:
-            wait.until(
-                lambda d: home_page.is_product_visible(product_id)
-            )
-            product_visible = True
-        except:
-            product_visible = False
+        product_visible = home_page.wait_for_product_visible(product_id)
         
         # Verify product exists via API
-        products_api = ProductsApi()
         api_products = products_api.search_products(product_name)
         api_product_ids = [p.get("_id") for p in api_products]
         

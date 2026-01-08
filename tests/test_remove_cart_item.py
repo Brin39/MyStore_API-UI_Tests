@@ -2,9 +2,7 @@
 Test removing item from cart.
 """
 
-import time
 import pytest
-from selenium.webdriver.common.by import By
 from logic.ui.cart_page import CartPage
 
 
@@ -17,7 +15,7 @@ class TestRemoveCartItem:
         logged_in_browser,
         cart_api,
         get_random_product
-    , driver):
+    ):
         """
         Test removing item from cart.
         
@@ -37,11 +35,9 @@ class TestRemoveCartItem:
         cart_api.add_to_cart(product["_id"], 1, token)
         
         # Act - Navigate to cart via UI click (preserves localStorage)
-        cart_link = driver.find_element(By.CSS_SELECTOR, '[data-testid="cart-link"]')
-        cart_link.click()
-        time.sleep(1)
-        
         cart_page = CartPage(driver)
+        cart_page.open_via_ui()
+        
         item_visible_before = not cart_page.is_cart_empty()
         
         cart_page.remove_item(product["_id"])

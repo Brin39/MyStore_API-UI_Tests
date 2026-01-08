@@ -2,9 +2,7 @@
 Test viewing user orders list.
 """
 
-import time
 import pytest
-from selenium.webdriver.common.by import By
 from logic.ui.orders_page import OrdersPage
 
 
@@ -37,15 +35,8 @@ class TestViewOrdersList:
         api_order_ids = [o.get("_id") for o in api_orders]
         
         # Act - Navigate to Orders via UI clicks (preserves session)
-        profile_btn = driver.find_element(By.CSS_SELECTOR, '[data-testid="profile-button"]')
-        profile_btn.click()
-        time.sleep(0.5)
-        
-        orders_link = driver.find_element(By.CSS_SELECTOR, '[data-testid="dashboard-my-orders"]')
-        orders_link.click()
-        time.sleep(1)
-        
         orders_page = OrdersPage(driver)
+        orders_page.open_via_ui()
         orders_page.wait_for_orders_loaded()
         
         is_on_orders = orders_page.is_on_orders_page()

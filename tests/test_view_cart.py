@@ -2,9 +2,7 @@
 Test viewing cart displays items correctly.
 """
 
-import time
 import pytest
-from selenium.webdriver.common.by import By
 from logic.ui.cart_page import CartPage
 
 
@@ -41,11 +39,8 @@ class TestViewCart:
         api_items_count = len(api_cart.get("items", []))
         
         # Act - Navigate to cart via UI click (preserves localStorage)
-        cart_link = driver.find_element(By.CSS_SELECTOR, '[data-testid="cart-link"]')
-        cart_link.click()
-        time.sleep(1)
-        
         cart_page = CartPage(driver)
+        cart_page.open_via_ui()
         
         is_on_cart = cart_page.is_on_cart_page()
         cart_not_empty = not cart_page.is_cart_empty()
@@ -53,7 +48,7 @@ class TestViewCart:
         
         # Assert
         assert is_on_cart, "Should be on cart page"
-        assert api_items_count > 0, "Cart should have items (API verification)"
+        assert api_items_count == 1, f"Cart should have 1 item (API verification). Found {api_items_count} items"
         assert cart_not_empty, "Cart should not be empty"
         assert displayed_quantity == 2, \
             f"Displayed quantity should be 2, got {displayed_quantity}"

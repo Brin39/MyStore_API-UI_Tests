@@ -72,3 +72,5 @@ class TestAdminCreateProduct:
             "Created product should appear in admin list"
         assert product_name in product_names, \
             "Created product should exist in API"
+        assert created_product is not None, \
+            "Created product should be found in API"

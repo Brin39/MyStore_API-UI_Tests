@@ -12,8 +12,7 @@ class TestRegisterExistingEmail:
     def test_register_with_existing_email_fails(
         self,
         register_page,
-        create_test_user,
-        data_factory
+        create_test_user
     ):
         """
         Test registration with existing email shows error.

@@ -31,13 +31,11 @@ class TestProductModalDetails:
         home_page.click_product(product["_id"])
         
         modal_visible = home_page.is_product_modal_visible()
+        home_page.wait_for_modal_content_loaded()
         
-        # Wait for modal content to load before getting text
-        home_page.is_visible_by_testid("modal-product-name", timeout=10)
-        home_page.is_visible_by_testid("modal-product-price", timeout=10)
-        
-        modal_name = home_page.get_text_by_testid("modal-product-name")
-        modal_price = home_page.get_text_by_testid("modal-product-price")
+        modal_name = home_page.get_modal_product_name()
+        modal_price = home_page.get_modal_product_price()
+        modal_description = home_page.get_modal_product_description()
         
         # Assert
         assert product is not None, "Should get a product from API"
@@ -46,4 +44,6 @@ class TestProductModalDetails:
             f"Modal should show product name. Expected '{product['name']}', got '{modal_name}'"
         assert str(product["price"]) in modal_price.replace("$", "").replace(",", ""), \
             "Modal should show product price"
+        assert product.get("description", "") in modal_description, \
+            f"Modal should show product description. Expected '{product.get('description', '')}' in '{modal_description}'"
 

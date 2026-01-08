@@ -55,4 +55,10 @@ class AdminOrdersPage(BasePage):
     def confirm_action(self):
         """Confirm action - handle browser alert"""
         self.confirm_browser_alert()
+    
+    def wait_for_status_update(self, order_id: str, timeout: int = 5):
+        """Wait for order status to update after change"""
+        # Wait a moment for the status to update in the UI
+        import time
+        time.sleep(0.5)
 

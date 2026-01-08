@@ -2,7 +2,6 @@
 Test admin can change order status.
 """
 
-import time
 import pytest
 
 
@@ -49,15 +48,11 @@ class TestAdminChangeOrderStatus:
         
         # Verify initial status in UI
         initial_displayed_status = admin_orders_page.get_order_status(order_id)
-        time.sleep(1)
 
         # Change status
         admin_orders_page.click_update_status(order_id)
         admin_orders_page.confirm_action()
-        
-        # Wait for status update
-        time.sleep(0.5)
-        
+        admin_orders_page.wait_for_status_update(order_id)
         
         # Get updated status from UI
         displayed_status = admin_orders_page.get_order_status(order_id)

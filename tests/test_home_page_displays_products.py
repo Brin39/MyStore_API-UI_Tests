@@ -12,7 +12,6 @@ class TestHomePageDisplaysProducts:
     @pytest.mark.smoke
     def test_home_page_displays_products(
         self,
-        browser,
         home_page,
         products_api
     ):
@@ -33,6 +32,6 @@ class TestHomePageDisplaysProducts:
         # Assert
         assert ui_products_count > 0, \
             "Home page should display products"
-        assert ui_products_count <= len(api_products), \
+        assert ui_products_count == len(api_products), \
             "UI should not show more products than exist in database"
 

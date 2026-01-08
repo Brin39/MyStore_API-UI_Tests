@@ -46,9 +46,7 @@ class TestAddProductToCart:
         modal_visible = home_page.is_product_modal_visible()
         home_page.click_add_to_cart()
         
-        # Wait for backend to process the add to cart
-        time.sleep(2)
-        
+       
         # home_page.refresh()
         new_count = home_page.get_cart_count()
         

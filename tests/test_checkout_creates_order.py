@@ -2,7 +2,6 @@
 Test checkout creates new order.
 """
 
-import time
 import pytest
 from logic.ui.cart_page import CartPage
 from logic.ui.orders_page import OrdersPage
@@ -44,12 +43,9 @@ class TestCheckoutCreatesOrder:
         # Act - Navigate to cart via UI click (preserves localStorage)
         cart_page = CartPage(driver)
         cart_page.open_via_ui()
-        time.sleep(1)
         
         cart_page.click_checkout()
-        
-        # Wait for order creation to complete and page to stabilize
-        time.sleep(3)
+        cart_page.wait_for_checkout_complete()
         
         # Navigate to orders via UI clicks (preserves session)
         orders_page = OrdersPage(driver)

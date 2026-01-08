@@ -6,22 +6,28 @@
   <component name="ChangeListManager">
     <list default="true" id="9fa0deac-f579-47c7-8866-cdc4fd2ede6e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/cleanup.py" beforeDir="false" afterPath="$PROJECT_DIR$/fixtures/cleanup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/ui/admin_dashboard_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/admin_dashboard_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/ui/admin_orders_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/admin_orders_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/ui/admin_products_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/admin_products_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/ui/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/base_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/api/cart_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/api/cart_api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/ui/cart_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/cart_page.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/ui/home_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/home_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/ui/login_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/login_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/ui/orders_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/orders_page.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/ui/profile_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/profile_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/ui/register_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/ui/register_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_admin_change_order_status.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_admin_change_order_status.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_admin_edit_user.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_add_product_to_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_add_product_to_cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_admin_create_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_admin_create_product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_admin_sees_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_admin_sees_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_checkout_creates_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_checkout_creates_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_clear_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_clear_cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_decrease_cart_quantity.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_decrease_cart_quantity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_home_page_displays_products.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_home_page_displays_products.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_increase_cart_quantity.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_increase_cart_quantity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_login_nonexistent_email.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_login_nonexistent_email.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_product_modal_details.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_product_modal_details.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_register_existing_email.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_register_existing_email.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_remove_cart_item.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_remove_cart_item.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_search_finds_products.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_search_finds_products.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_search_no_results.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_search_no_results.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_update_profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_update_profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_view_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_view_cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_view_order_details.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_view_orders_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_view_orders_list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/cleanup_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/cleanup_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,6 +91,7 @@
     "Python tests.Python tests in test_update_profile.py.executor": "Run",
     "Python tests.Python tests in test_view_cart.py.executor": "Run",
     "Python tests.Python tests in test_view_order_details.py.executor": "Run",
+    "Python tests.Python tests in test_view_order_status.py.executor": "Run",
     "Python tests.Python tests in test_view_orders_list.py.executor": "Run",
     "Python tests.Python tests in test_view_profile.py.executor": "Run",
     "Python.test_admin_edit_product.executor": "Run",

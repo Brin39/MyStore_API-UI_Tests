@@ -2,9 +2,7 @@
 Test viewing order details.
 """
 
-import time
 import pytest
-from selenium.webdriver.common.by import By
 from logic.ui.orders_page import OrdersPage
 
 
@@ -38,15 +36,8 @@ class TestViewOrderDetails:
         api_status = api_order.get("status", "pending")
         
         # Act - Navigate to orders via UI clicks (preserves localStorage)
-        profile_btn = driver.find_element(By.CSS_SELECTOR, '[data-testid="profile-button"]')
-        profile_btn.click()
-        time.sleep(0.5)
-        
-        orders_link = driver.find_element(By.CSS_SELECTOR, '[data-testid="dashboard-my-orders"]')
-        orders_link.click()
-        time.sleep(1)
-        
         orders_page = OrdersPage(driver)
+        orders_page.open_via_ui()
         orders_page.wait_for_orders_loaded()
         
         displayed_status = orders_page.get_order_status(order_id)

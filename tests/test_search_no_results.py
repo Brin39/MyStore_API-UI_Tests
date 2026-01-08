@@ -3,7 +3,6 @@ Test search with no matches shows empty state.
 """
 
 import pytest
-from selenium.webdriver.support.ui import WebDriverWait
 from utils.data_factory import DataFactory
 
 
@@ -32,31 +31,17 @@ class TestSearchNoResults:
         matching_products = [p for p in all_products if nonexistent_name.lower() in p.get("name", "").lower()]
         no_matching_products_in_api = len(matching_products) == 0
         
+        # Verify via API search that no products match
+        api_products = products_api.search_products(nonexistent_name)
+        
         # Act
         home_page.open()
-        
-        # Get initial products count (before search)
         initial_count = home_page.get_product_count()
         
         home_page.search(nonexistent_name)
+        home_page.wait_for_search_results_changed(initial_count)
         
-        # Wait for search results to update (polling until count changes or becomes 0)
-        driver = home_page.driver
-        wait = WebDriverWait(driver, 2)
-        
-        # Wait until product count changes (search results updated)
-        # This handles both cases: count becomes 0 or count decreases
-        wait.until(
-            lambda d: home_page.get_product_count() != initial_count
-        )
-        
-               
         products_count = home_page.get_product_count()
-        
-        # Verify via API that no products match
-        from logic.api.products_api import ProductsApi
-        products_api = ProductsApi()
-        api_products = products_api.search_products(nonexistent_name)
         
         # Assert
         assert no_matching_products_in_api, \

@@ -27,6 +27,19 @@ class ProfilePage(BasePage):
         """Navigate to profile page"""
         self.navigate(Urls.PROFILE)
     
+    def open_via_ui(self):
+        """Navigate to profile page via UI click (preserves localStorage)"""
+        import time
+        # Wait for profile button to be visible and clickable, then click
+        self.is_visible_by_testid("profile-button", timeout=10)
+        self.click_by_testid("profile-button")
+        time.sleep(0.5)
+        
+        # Wait for profile link to be visible and clickable, then click
+        self.is_visible_by_testid("dashboard-my-profile", timeout=10)
+        self.click_by_testid("dashboard-my-profile")
+        time.sleep(1)
+    
     # ==================== DISPLAY MODE ====================
     
     def click_edit(self):
@@ -71,4 +84,9 @@ class ProfilePage(BasePage):
             self.enter_address(address)
         
         self.click_save()
+    
+    def wait_for_profile_saved(self, timeout: int = 5):
+        """Wait for profile save to complete"""
+        # Wait for edit button to reappear (indicating save completed and back to display mode)
+        self.is_visible_by_testid(self.PROFILE_EDIT_BTN, timeout=timeout)
 

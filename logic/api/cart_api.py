@@ -89,4 +89,45 @@ class CartApi:
         cart = self.get_cart(token)
         items = cart.get("items", [])
         return len(items)
+    
+    def wait_for_item_quantity(self, product_id: str, expected_quantity: int, token: str, timeout: float = 2.5) -> int:
+        """
+        Wait for item quantity to match expected value in cart.
+        Polls API until quantity matches or timeout is reached.
+        
+        Args:
+            product_id: Product ID to check
+            expected_quantity: Expected quantity value
+            token: User authentication token
+            timeout: Maximum time to wait in seconds (default 2.5 = 5 attempts * 0.5s)
+        
+        Returns:
+            int: Actual quantity found in API (may not match expected if timeout)
+        """
+        import time
+        max_attempts = int(timeout / 0.5) or 5
+        api_quantity = None
+        
+        for _ in range(max_attempts):
+            cart = self.get_cart(token)
+            cart_items = cart.get("items", [])
+            for item in cart_items:
+                item_product_id = item.get("product", {}).get("_id") or item.get("productId")
+                if item_product_id == product_id:
+                    api_quantity = item.get("quantity", 0)
+                    if api_quantity == expected_quantity:
+                        return api_quantity
+            time.sleep(0.5)
+        
+        # Final check if still None
+        if api_quantity is None:
+            cart = self.get_cart(token)
+            cart_items = cart.get("items", [])
+            for item in cart_items:
+                item_product_id = item.get("product", {}).get("_id") or item.get("productId")
+                if item_product_id == product_id:
+                    api_quantity = item.get("quantity", 0)
+                    break
+        
+        return api_quantity if api_quantity is not None else 0
 

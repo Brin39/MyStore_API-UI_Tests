@@ -2,7 +2,6 @@
 Test clearing cart removes all items.
 """
 
-import time
 import pytest
 from logic.ui.cart_page import CartPage
 
@@ -53,18 +52,12 @@ class TestClearCart:
         # Act - Navigate to cart via UI click (preserves localStorage)
         cart_page = CartPage(driver)
         cart_page.open_via_ui()
-        time.sleep(1)
         
         cart_had_items = not cart_page.is_cart_empty()
         cart_page.click_clear_cart()
         
-        # Wait for cart to be cleared (backend processing + UI update)
-        time.sleep(2)
-        
-        # Wait for cart to be empty in UI (polling)
-        from selenium.webdriver.support.ui import WebDriverWait
-        wait = WebDriverWait(driver, 10)
-        wait.until(lambda d: cart_page.is_cart_empty())
+        # Wait for cart to be empty in UI
+        cart_page.wait_for_cart_empty()
         
         cart_is_empty = cart_page.is_cart_empty()
         

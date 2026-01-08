@@ -20,6 +20,11 @@ class HomePage(BasePage):
     PRODUCT_MODAL = "product-modal"
     ADD_TO_CART_BTN = "add-to-cart-btn"
     
+    # Product modal test IDs
+    MODAL_PRODUCT_NAME = "modal-product-name"
+    MODAL_PRODUCT_PRICE = "modal-product-price"
+    MODAL_PRODUCT_DESCRIPTION = "modal-product-description"
+    
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
     
@@ -56,6 +61,28 @@ class HomePage(BasePage):
         self.type_by_testid(self.SEARCH_INPUT, query)
         self.click_by_testid(self.SEARCH_BTN)
     
+    def wait_for_search_results(self, expected_count: int, timeout: int = 2):
+        """Wait for search results to update to expected count"""
+        self.wait.until(
+            lambda d: self.get_product_count() == expected_count
+        )
+    
+    def wait_for_search_results_changed(self, initial_count: int, timeout: int = 1):
+        """Wait for search results to change from initial count"""
+        self.wait.until(
+            lambda d: self.get_product_count() != initial_count
+        )
+    
+    def wait_for_product_visible(self, product_id: str, timeout: int = 2) -> bool:
+        """Wait for product to be visible in search results"""
+        try:
+            self.wait.until(
+                lambda d: self.is_product_visible(product_id)
+            )
+            return True
+        except Exception:
+            return False
+    
     # ==================== PRODUCTS ====================
     
     def get_product_count(self) -> int:
@@ -86,6 +113,24 @@ class HomePage(BasePage):
     def is_product_modal_visible(self) -> bool:
         """Check if product modal is open"""
         return self.is_visible_by_testid(self.PRODUCT_MODAL, timeout=5)
+    
+    def wait_for_modal_content_loaded(self):
+        """Wait for modal content to load"""
+        self.is_visible_by_testid(self.MODAL_PRODUCT_NAME, timeout=3)
+        self.is_visible_by_testid(self.MODAL_PRODUCT_PRICE, timeout=3)
+        self.is_visible_by_testid(self.MODAL_PRODUCT_DESCRIPTION, timeout=3)
+    
+    def get_modal_product_name(self) -> str:
+        """Get product name from modal"""
+        return self.get_text_by_testid(self.MODAL_PRODUCT_NAME)
+    
+    def get_modal_product_price(self) -> str:
+        """Get product price from modal"""
+        return self.get_text_by_testid(self.MODAL_PRODUCT_PRICE)
+    
+    def get_modal_product_description(self) -> str:
+        """Get product description from modal"""
+        return self.get_text_by_testid(self.MODAL_PRODUCT_DESCRIPTION)
     
     def click_add_to_cart(self):
         """Click add to cart button in modal"""

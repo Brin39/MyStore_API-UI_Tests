@@ -124,6 +124,14 @@ class CartPage(BasePage):
         self.is_visible_by_testid(self.CHECKOUT_BTN, timeout=10)
         self.click_by_testid(self.CHECKOUT_BTN)
     
+    def wait_for_checkout_complete(self, timeout: int = 10):
+        """Wait for checkout to complete and page to stabilize"""
+        # Wait for redirect or page change after checkout
+        # Checkout redirects away from cart page (to orders, home, or success page)
+        self.wait.until(
+            lambda d: Urls.CART not in self.get_current_url()
+        )
+    
     def click_clear_cart(self):
         """Click clear cart button"""
         self.click_by_testid(self.CLEAR_CART_BTN)
@@ -131,4 +139,16 @@ class CartPage(BasePage):
     def is_on_cart_page(self) -> bool:
         """Check if on cart page"""
         return Urls.CART in self.get_current_url()
+    
+    def wait_for_cart_empty(self, timeout: int = 10):
+        """Wait for cart to be empty after clearing"""
+        self.wait.until(
+            lambda d: self.is_cart_empty()
+        )
+    
+    def wait_for_item_quantity(self, product_id: str, expected_quantity: int, timeout: int = 10):
+        """Wait for item quantity to match expected value"""
+        self.wait.until(
+            lambda d: self.get_item_quantity(product_id) == expected_quantity
+        )
 

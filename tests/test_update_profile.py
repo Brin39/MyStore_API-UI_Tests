@@ -2,9 +2,7 @@
 Test updating user profile.
 """
 
-import time
 import pytest
-from selenium.webdriver.common.by import By
 from utils.data_factory import DataFactory
 from logic.ui.profile_page import ProfilePage
 
@@ -39,19 +37,11 @@ class TestUpdateProfile:
         new_address = f"Test Address {DataFactory.unique_id()}"
         
         # Act - Navigate to profile via UI clicks (preserves session)
-        profile_btn = driver.find_element(By.CSS_SELECTOR, '[data-testid="profile-button"]')
-        profile_btn.click()
-        time.sleep(0.5)
-        
-        my_profile_link = driver.find_element(By.CSS_SELECTOR, '[data-testid="dashboard-my-profile"]')
-        my_profile_link.click()
-        time.sleep(1)
-        
         profile_page = ProfilePage(driver)
-        profile_page.update_profile(phone=new_phone, address=new_address)
+        profile_page.open_via_ui()
         
-        # Wait for save
-        time.sleep(1)
+        profile_page.update_profile(phone=new_phone, address=new_address)
+        profile_page.wait_for_profile_saved()
         
         # Get updated profile from API
         updated_profile = auth_api.get_profile(token)

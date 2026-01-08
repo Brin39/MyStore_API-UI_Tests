@@ -25,8 +25,6 @@ class TestAdminSeesOrder:
         Assert: Order visible in admin orders
         """
         # Arrange
-        admin_data = logged_in_admin_browser
-        
         # Create a separate test user and order
         user_data = create_test_user()
         user_token = user_data["token"]

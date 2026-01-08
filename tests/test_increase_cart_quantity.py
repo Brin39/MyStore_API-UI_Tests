@@ -2,9 +2,7 @@
 Test increasing product quantity in cart.
 """
 
-import time
 import pytest
-from selenium.webdriver.support.ui import WebDriverWait
 from logic.ui.cart_page import CartPage
 
 
@@ -28,7 +26,7 @@ class TestIncreaseCartQuantity:
         # Arrange
         user_data = logged_in_browser
         token = user_data["token"]
-        driver = user_data["driver"]  # Needed for WebDriverWait
+        driver = user_data["driver"]
         
         cart_api.clear_cart(token)
         
@@ -39,35 +37,17 @@ class TestIncreaseCartQuantity:
         # Act - Navigate to cart via UI click (preserves localStorage)
         cart_page = CartPage(driver)
         cart_page.open_via_ui()
-        time.sleep(2) 
 
         initial_quantity = cart_page.get_item_quantity(product["_id"])
-        cart_page.increase_item_quantity(product["_id"])
-        
-        # Wait for backend to process the quantity increase
-        time.sleep(2)
-        
-        # Wait for quantity to update in UI (polling until it changes)
-        wait = WebDriverWait(driver, 10)
         expected_quantity = initial_quantity + 1
         
-        # Wait until UI quantity matches expected value
-        # Reads from data-testid="cart-item-quantity-{product_id}"
-        wait.until(
-            lambda d: cart_page.get_item_quantity(product["_id"]) == expected_quantity
-        )
+        cart_page.increase_item_quantity(product["_id"])
+        cart_page.wait_for_item_quantity(product["_id"], expected_quantity)
         
         new_quantity = cart_page.get_item_quantity(product["_id"])
         
-        # Verify via API that quantity was actually increased
-        cart = cart_api.get_cart(token)
-        cart_items = cart.get("items", [])
-        api_quantity = None
-        for item in cart_items:
-            item_product_id = item.get("product", {}).get("_id") or item.get("productId")
-            if item_product_id == product["_id"]:
-                api_quantity = item.get("quantity", 0)
-                break
+        # Wait for API to update
+        api_quantity = cart_api.wait_for_item_quantity(product["_id"], expected_quantity, token)
         
         # Assert
         assert new_quantity == initial_quantity + 1, \
